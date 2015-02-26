@@ -6,9 +6,10 @@ import os
 dotfile_folder = os.path.expanduser('~/code/dotfiles')
 dotfiles = {
     # source : destination
-    'skel': '~/.vim/skel',
     'screenrc': '~/.screenrc',
+    'skel': '~/.vim/skel',
     'vimrc': '~/.vimrc',
+    'Xdefaults': '~/.Xdefaults',
     'xinitrc': '~/.xinitrc',
     'zshrc': '~/.zshrc',
 }

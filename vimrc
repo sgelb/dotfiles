@@ -93,14 +93,10 @@ augroup vimrcEx
   autocmd BufRead /tmp/mutt* :source ~/.vim/mail.vim
 
   " Load templates for new files
-  autocmd BufNewFile  *.py	0r ~/.vim/skel/py | call LoadTemplate()
-  autocmd BufNewFile  *.sh	0r ~/.vim/skel/sh | call LoadTemplate()
   autocmd BufNewFile  *.java	0r ~/.vim/skel/java | %s/<FILE>/\=expand("%:t:r")/g
-  autocmd BufNewFile  *.tex	0r ~/.vim/skel/tex  | %s/<FILE>/\=expand("%:t:r")/g | set ft=tex
-  autocmd BufNewFile  *.tex.r :silent :e %:r | 0r ~/.vim/skel/referat.tex | set ft=tex
-  autocmd BufNewFile  *.tex.b	:silent :e %:r | 0r ~/.vim/skel/beamer.tex  | set ft=tex
+  autocmd BufNewFile  *.py	0r ~/.vim/skel/py | call LoadTemplate()
   autocmd BufNewFile  *.rb	0r ~/.vim/skel/rb 
-  autocmd BufNewFile  *.html	0r ~/.vim/skel/html
+  autocmd BufNewFile  *.sh	0r ~/.vim/skel/sh | call LoadTemplate()
 
 augroup END
 
