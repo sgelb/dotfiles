@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# First modified: <vi-tpl-time>
+
+# Exit if any statement returns non-true
+# Use command || true to avoid
+set -o errexit
+
+# Exit script if using unset variable
+set -o nounset
+
