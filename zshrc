@@ -6,10 +6,9 @@ if [[ -z "${DISPLAY}" ]] && [[ $(tty) =~ tty[123] ]]; then
 fi
 
 # exports and variables {{{
-export PATH="${PATH}:${HOME}/bin:${HOME}/.gem/ruby/2.1.0/bin/"
+export PATH="${PATH}:${HOME}/bin:$(ruby -e 'print Gem.user_dir')"
 export EDITOR='/usr/bin/vim'
 export SHELL='/bin/zsh'
-export GEM_HOME=~/.gem/ruby/2.0.0
 HISTFILE=${HOME}/.zsh_history
 # }}}
 
