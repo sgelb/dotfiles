@@ -323,59 +323,6 @@ whiteboard () {
 
 # }}}
 
-# ls_colors {{{
-LS_COLORS=''
-LS_COLORS=${LS_COLORS}:'no=0' # Normal text = Default foreground
-LS_COLORS=${LS_COLORS}:'fi=0' # Regular file = Default foreground
-LS_COLORS=${LS_COLORS}:'di=32' # Directory = Bold, Yellow
-LS_COLORS=${LS_COLORS}:'ln=01;36' # Symbolic link = Bold, Cyan
-LS_COLORS=${LS_COLORS}:'pi=33' # Named pipe = Yellow
-LS_COLORS=${LS_COLORS}:'so=01;35' # Socket = Bold, Magenta
-LS_COLORS=${LS_COLORS}:'do=01;35' # DO = Bold, Magenta
-LS_COLORS=${LS_COLORS}:'bd=01;37' # Block device = Bold, Grey
-LS_COLORS=${LS_COLORS}:'cd=01;37' # Character device = Bold, Grey
-LS_COLORS=${LS_COLORS}:'ex=35' # Executable file = Light, Blue
-LS_COLORS=${LS_COLORS}:'*FAQ=31;7' # FAQs = Foreground Red, Background Black
-LS_COLORS=${LS_COLORS}:'*README=31;7' # READMEs = Foreground Red, Background Black
-LS_COLORS=${LS_COLORS}:'*INSTALL=31;7' # INSTALLs = Foreground Red, Background Black
-LS_COLORS=${LS_COLORS}:'*.sh=47;31' # Shell-Scripts = Foreground White, Background Red
-LS_COLORS=${LS_COLORS}:'*.vim=35' # Vim-"Scripts" = Purple
-LS_COLORS=${LS_COLORS}:'*.torrent=4;33' # Torrents = Orange, Underline
-LS_COLORS=${LS_COLORS}:'*.swp=00;44;37' # Swapfiles (Vim = Foreground Blue, Background White
-LS_COLORS=${LS_COLORS}:'*.sl=30;33' # Slang-Scripts = Yellow
-LS_COLORS=${LS_COLORS}:'*,v=5;34;93' # Versioncontrols = Bold, Yellow
-LS_COLORS=${LS_COLORS}:'or=01;05;31' # Orphaned link = Bold, Red, Flashing
-LS_COLORS=${LS_COLORS}:'*.c=1;33' # Sources = Bold, Yellow
-LS_COLORS=${LS_COLORS}:'*.C=1;33' # Sources = Bold, Yellow
-LS_COLORS=${LS_COLORS}:'*.h=1;33' # Sources = Bold, Yellow
-LS_COLORS=${LS_COLORS}:'*.cc=1;33' # Sources = Bold, Yellow
-LS_COLORS=${LS_COLORS}:'*.awk=1;33' # Sources = Bold, Yellow
-LS_COLORS=${LS_COLORS}:'*.pl=1;33' # Sources = Bold, Yellow
-LS_COLORS=${LS_COLORS}:'*.jpg=1;32' # Images = Bold, Green
-LS_COLORS=${LS_COLORS}:'*.jpeg=1;32' # Images = Bold, Green
-LS_COLORS=${LS_COLORS}:'*.JPG=1;32' # Images = Bold, Green
-LS_COLORS=${LS_COLORS}:'*.gif=1;32' # Images = Bold, Green
-LS_COLORS=${LS_COLORS}:'*.png=1;32' # Images = Bold, Green
-LS_COLORS=${LS_COLORS}:'*.jpeg=1;32' # Images = Bold, Green
-LS_COLORS=${LS_COLORS}:'*.ppm=1;32' # Images = Bold, Green
-LS_COLORS=${LS_COLORS}:'*.pgm=1;32' # Images = Bold, Green
-LS_COLORS=${LS_COLORS}:'*.pbm=1;32' # Images = Bold, Green
-LS_COLORS=${LS_COLORS}:'*.tar=31' # Archive = Red
-LS_COLORS=${LS_COLORS}:'*.tgz=31' # Archive = Red
-LS_COLORS=${LS_COLORS}:'*.gz=31' # Archive = Red
-LS_COLORS=${LS_COLORS}:'*.zip=31' # Archive = Red
-LS_COLORS=${LS_COLORS}:'*.sit=31' # Archive = Red
-LS_COLORS=${LS_COLORS}:'*.lha=31' # Archive = Red
-LS_COLORS=${LS_COLORS}:'*.lzh=31' # Archive = Red
-LS_COLORS=${LS_COLORS}:'*.arj=31' # Archive = Red
-LS_COLORS=${LS_COLORS}:'*.bz2=31' # Archive = Red
-LS_COLORS=${LS_COLORS}:'*.html=36' # HTML = Cyan
-LS_COLORS=${LS_COLORS}:'*.htm=1;34' # HTML = Bold, Blue
-LS_COLORS=${LS_COLORS}:'*.php=1;45' # PHP = White, Cyan
-LS_COLORS=${LS_COLORS}:'*.doc=1;34' # MS-Word *lol* = Bold, Blue
-LS_COLORS=${LS_COLORS}:'*.txt=1;34' # Plain/Text = Bold, Blue
-LS_COLORS=${LS_COLORS}:'*.o=1;36' # Object-Files = Bold, Cyan
-LS_COLORS=${LS_COLORS}:'*.a=1;36' # Shared-libs = Bold, Cyan
-export LS_COLORS
-# }}}
+# ls_colors
+eval `dircolors $HOME/.local/share/dircolors/solarized256dark`
 
