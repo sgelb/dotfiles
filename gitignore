@@ -1,0 +1,39 @@
+# generic files to ognore
+*~
+*.swp
+*.bak
+*.lock
+*.out
+*.log
+
+# sgelb/vTransfer
+.vTransfer
+
+# python specific
+*.pyc
+
+# java/eclipse
+*.class
+*.pydevproject
+.project
+.metadata
+tmp/**
+tmp/**/*
+*.tmp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+proguard/
+
+# android
+*.apk
+*.dex
+.gradle/
+build/
+/*/build/
+
+# c/c++
+*.o
+*.so

@@ -8,6 +8,7 @@ dotfiles = {
     # source : destination
     'gitconfig': '~/.gitconfig',
     'githelpers': '~/.githelpers',
+    'gitignore': '~/.gitignore',
     'screenrc': '~/.screenrc',
     'skel': '~/.vim/skel',
     'vimrc': '~/.vimrc',
