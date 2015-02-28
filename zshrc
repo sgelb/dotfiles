@@ -189,7 +189,6 @@ zstyle ':completion:*:*:kill:*:processes' sort false
 zstyle ':completion:*:processes' command 'ps --forest -A -o pid,user,cmd'
 zstyle ':completion:*:processes-names' command 'ps c -u ${USER} -o command | uniq'
 zstyle ':completion:*:processes' command 'ps --forest -au${USER} -o pid,time,cmd | grep -v "ps .* pid,time,cmd"'
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)[ 0-9:]#([^ ]#)*=01;30=01;31=01;38'
 
 # disable hostname completion
 zstyle ':completion:*' hosts off 
