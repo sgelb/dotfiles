@@ -1,0 +1,26 @@
+[include]
+  # include [user] from extra file
+  path = ~/.config/git/user
+[push]
+	default = simple
+[core]
+	excludesfile = ~/.gitignore
+[color]
+	ui = true
+[alias]
+  co = checkout
+  ci = commit --verbose
+  di = diff
+  dc = diff --cached
+  aa = add --all
+  st = status
+
+  # Fancy logging.
+  # h = head
+  # hp = head with patch
+  # l = all commits, only current branch
+  # la = all commits, all reachable refs
+  h = !git l -1
+  hp = "!. ~/.githelpers && show_git_head"
+  l = "!. ~/.githelpers && pretty_git_log"
+  la = !git l --all

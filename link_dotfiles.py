@@ -6,6 +6,7 @@ import os
 dotfile_folder = os.path.expanduser('~/code/dotfiles')
 dotfiles = {
     # source : destination
+    'gitconfig': '~/.gitconfig',
     'githelpers': '~/.githelpers',
     'screenrc': '~/.screenrc',
     'skel': '~/.vim/skel',
