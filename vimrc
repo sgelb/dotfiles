@@ -90,7 +90,7 @@ augroup vimrcEx
   autocmd BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
   " MUTT
-  autocmd BufRead /tmp/mutt* :source ~/.vim/mail.vim
+  autocmd BufRead /tmp/mutt* :set ft=mail
 
   " Load templates for new files
   autocmd BufNewFile  *.java	0r ~/.vim/skel/java | %s/<FILE>/\=expand("%:t:r")/g
