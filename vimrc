@@ -142,6 +142,16 @@ map <leader>t :tabnew
 nmap j gj
 nmap k gk
 
+
+" Move to the next buffer
+nmap <leader>k :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>j :bprevious<CR>"
+
+" Close the current buffer and move to the previous one
+nmap <leader>q :bp <BAR> bd #<CR>"
+
 " Unbind the cursor keys in insert, normal and visual modes.
 " Force myself to use hjkl
 for prefix in ['i', 'n', 'v']
