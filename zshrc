@@ -10,7 +10,11 @@ export PATH="${PATH}:${HOME}/bin:$(ruby -e 'print Gem.user_dir')/bin"
 export EDITOR='/usr/bin/vim'
 export SHELL='/bin/zsh'
 HISTFILE=${HOME}/.zsh_history
+
+# Highlight search results in ack.
+export ACK_COLOR_MATCH='red'
 # }}}
+
 
 # options {{{
 
@@ -30,6 +34,7 @@ autoload zmv # rename
 REPORTTIME=5  # show report if cmd runs longer than 5 secondes
 HISTSIZE=50000
 SAVEHIST=5000 # useful for setopt append_history
+
 
 # }}}
 
