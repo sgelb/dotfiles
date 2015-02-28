@@ -196,7 +196,7 @@ Bundle 'bullfight/vim-matchit'
 Bundle 'jiangmiao/auto-pairs'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'kien/rainbow_parentheses.vim'
-" Bundle 'kien/ctrlp.vim'
+Bundle 'kien/ctrlp.vim'
 Bundle 'majutsushi/tagbar'
 Bundle 'matze/vim-tex-fold'
 Bundle 'mileszs/ack.vim'
@@ -220,6 +220,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-speeddating'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'vim-scripts/a.vim'
+Bundle 'wincent/Command-T'
 " Bundle 'vim-scripts/OmniCppComplete'
 " Bundle 'yakiang/excel.vim'
 
@@ -231,8 +232,15 @@ Bundle 'vim-scripts/a.vim'
 let g:airline_theme='solarized'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#whitespace#enabled = 0
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+
+" CTRLP
+let g:ctrlp_working_path_mode = 'ra'
+nmap <leader>p :CtrlP<cr>
 
 " GUNDO
 nnoremap <leader>u :GundoToggle<CR>
