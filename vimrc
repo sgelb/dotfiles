@@ -288,7 +288,31 @@ fun LoadTemplate()
 	" Insert time automagicaly
 	let time = strftime('%Y-%m-%d, %H:%M')
 	exe ':%s/<vi-tpl-time>/' . time . '/g'
-  exe ':5'
+endfun
+
+" Very (!) basic adding/removing of license
+fun ToggleLicense(license)
+  let cursorposition = getpos(".")
+  let fname = expand('~/.vim/skel/') . a:license
+  let licenselength = len(readfile(fname))
+
+  if getline(1) !~# "Copyright (C)"
+    " Add file
+    exe ':0r ' . fname
+    " Set year
+    exe ':%s/<tpl-year>/' . strftime('%Y') . '/'
+    " Get new cursor position
+    let cursorposition[1] += licenselength
+    " comment license - needs 'tpope/vim-commentary'
+    exe ':0,' . licenselength . 'Commentary'
+  else
+    " Get new cursor position
+    let cursorposition[1] -= licenselength
+    " Delete license
+    exe '0,' . licenselength . 'delete'
+  endif
+
+  call setpos(".", cursorposition)
 endfun
 
 """""""
