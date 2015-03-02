@@ -1,0 +1,30 @@
+# ~/.config/ncmpcpp/config
+
+mpd_host = "localhost"
+mpd_port = "6600"
+mpd_music_dir = "~/mp3/music/"
+
+##### song format #####
+song_list_format = {%a - }{%t}|{%f}$R{(%l)}
+now_playing_prefix = $b
+now_playing_suffix = $/b
+
+##### columns settings #####
+song_columns_list_format = (20)[]{a} (50)[]{t|f:Title} (20)[]{b} $R{}(7f)[]{lr}
+
+##### various settings #####
+playlist_show_remaining_time = yes
+playlist_shorten_total_times = yes
+progressbar_look = ->
+titles_visibility = no
+cyclic_scrolling = yes
+generate_win32_compatible_filenames = no
+jump_to_now_playing_song_at_start = yes
+ask_before_clearing_playlists = no
+display_volume_level = no
+display_remaining_time = yes
+
+##### colors definitions #####
+empty_tag_color = white
+main_window_color = blue
+main_window_highlight_color = blue_white

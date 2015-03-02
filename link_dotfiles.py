@@ -12,11 +12,12 @@ dotfiles = {
     'gitconfig': '~/.gitconfig',
     'githelpers': '~/.githelpers',
     'gitignore': '~/.gitignore',
+    'ncmpcpp_config': '~/.config/ncmpcpp/config',
     'screenrc': '~/.screenrc',
     'skel': '~/.vim/skel',
     'vimrc': '~/.vimrc',
-    'Xresources': '~/.Xresources',
     'xinitrc': '~/.xinitrc',
+    'Xresources': '~/.Xresources',
     'zshrc': '~/.zshrc',
 }
 
