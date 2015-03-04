@@ -317,11 +317,20 @@ whiteboard () {
   optipng -o7 ${2};
 }
 
+# show various hashes of file
+hashes () {
+  gpg --print-md '*' "${1}"
+}
+
 # github.com/rupa/z
-. /usr/lib/z.sh
+if [[ -f /usr/lib/z.sh ]]; then
+  . /usr/lib/z.sh
+fi
 
 # }}}
 
 # ls_colors
-eval `dircolors $HOME/.local/share/dircolors/solarized256dark`
+if [[ -f  "$HOME/.local/share/dircolors/solarized256dark" ]]; then
+  eval `dircolors $HOME/.local/share/dircolors/solarized256dark`
+fi
 
