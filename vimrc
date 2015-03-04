@@ -211,7 +211,7 @@ Bundle 'scrooloose/syntastic'
 Bundle 'sgelb/TaskList.vim'
 if has('lua')
   Bundle 'Shougo/neocomplete.vim'
-end
+endif
 " Bundle 'sgelb/vTransfer'
 Bundle 'sjl/gundo.vim'
 Bundle 'terryma/vim-multiple-cursors'
@@ -254,6 +254,7 @@ if has('lua')
   let g:neocomplete#enable_at_startup = 0
   " Use smartcase.
   let g:neocomplete#enable_smart_case = 1
+endif
 
 
 " RAINBOW PARENTHESIS
