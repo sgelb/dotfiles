@@ -292,18 +292,25 @@ showmyips() {
 
 # Update packages
 pub() {
-  # Show latest news
-  curl --silent "https://www.archlinux.org/feeds/news/" | \
-    tr -d '\n\r' | \
-    sed 's/<\/item>/<\/item>\n/g' | \
-    sed -r 's/.*<title>(.*)<\/title>.*archlinux.org,([0-9]{4}-[0-9]{2}-[0-9]{2}).*/\2 \1/' | \
-    head -3
-  echo
-  echo Press enter for update 
-  read
-  echo
-  yaourt -Syua
-  rehash
+  dist=$(grep '^ID=' /etc/os-release | cut -d '=' -f 2)
+  if [[ "${dist}" =~ "arch" ]]; then
+    # Show latest news
+    curl --silent "https://www.archlinux.org/feeds/news/" | \
+      tr -d '\n\r' | \
+      sed 's/<\/item>/<\/item>\n/g' | \
+      sed -r 's/.*<title>(.*)<\/title>.*archlinux.org,([0-9]{4}-[0-9]{2}-[0-9]{2}).*/\2 \1/' | \
+      head -3
+    echo
+    echo Press enter for update 
+    read
+    echo
+    yaourt -Syua
+    rehash
+  elif [[ "${dist}" =~ "ubuntu|debian" ]]; then
+    sudo apt-get update
+    sudo apt-get -d dist-upgrade
+    sudo apt-get autoclean
+  fi
 }
 
 # Download lorem ipsum picture
