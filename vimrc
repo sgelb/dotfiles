@@ -181,9 +181,9 @@ inoremap <s-tab> <c-n>
 " VUNDLE
 """"""""
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'gmarik/vundle'
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Bundle 'gmarik/Vundle.vim'
 
 " Bundles here:
 Bundle 'airblade/vim-gitgutter'
@@ -223,6 +223,8 @@ Bundle 'vim-scripts/a.vim'
 Bundle 'wincent/Command-T'
 " Bundle 'vim-scripts/OmniCppComplete'
 " Bundle 'yakiang/excel.vim'
+
+call vundle#end()
 
 """"""""""""""""""""""
 " PLUGIN CONFIGURATION
