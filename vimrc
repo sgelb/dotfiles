@@ -209,7 +209,9 @@ Bundle 'plasticboy/vim-markdown'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'sgelb/TaskList.vim'
-Bundle 'Shougo/neocomplete.vim'
+if has('lua')
+  Bundle 'Shougo/neocomplete.vim'
+end
 " Bundle 'sgelb/vTransfer'
 Bundle 'sjl/gundo.vim'
 Bundle 'terryma/vim-multiple-cursors'
@@ -248,9 +250,11 @@ nmap <leader>p :CtrlP<cr>
 nnoremap <leader>u :GundoToggle<CR>
 
 " NEOCOMPLETE
-let g:neocomplete#enable_at_startup = 0
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
+if has('lua')
+  let g:neocomplete#enable_at_startup = 0
+  " Use smartcase.
+  let g:neocomplete#enable_smart_case = 1
+
 
 " RAINBOW PARENTHESIS
 au VimEnter * RainbowParenthesesToggle
