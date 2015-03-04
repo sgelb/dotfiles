@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# This program uses Python3
+
 import argparse
 import os
 import sys
+import shutil
 
 
 dotfile_folder = os.path.expanduser('~/code/dotfiles')
@@ -69,7 +72,7 @@ def main():
 
         # unless force option is set, ask for overwrite if destination exists
         if args.force or ask_overwrite(dst):
-            os.remove(dst)
+            shutil.rmtree(dst, ignore_errors=True)
             os.symlink(src, dst)
             print('{} Linked {} to {}'.format(ok, src, dst))
             continue
