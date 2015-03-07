@@ -49,6 +49,111 @@ filetype off
 " Use the below highlight group when displaying bad whitespace is desired
 highlight BadWhitespace ctermbg=red guibg=red
 
+""""""""
+" VUNDLE
+""""""""
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Bundle 'gmarik/Vundle.vim'
+
+" Bundles here:
+Bundle 'airblade/vim-gitgutter'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'bling/vim-airline'
+Bundle 'bullfight/vim-matchit'
+" Bundle 'chrisbra/csv.vim'
+" Bundle 'ervandew/supertab'
+" Bundle 'itszero/javacomplete'
+Bundle 'jiangmiao/auto-pairs'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'kien/ctrlp.vim'
+Bundle 'majutsushi/tagbar'
+Bundle 'matze/vim-tex-fold'
+Bundle 'mileszs/ack.vim'
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'octol/vim-cpp-enhanced-highlight'
+Bundle 'pangloss/vim-javascript'
+Bundle 'plasticboy/vim-markdown'
+"Bundle 'rstacruz/sparkup'
+" Bundle 'Rip-Rip/clang_complete'
+Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/syntastic'
+Bundle 'sgelb/TaskList.vim'
+if has('lua')
+  Bundle 'Shougo/neocomplete.vim'
+endif
+" Bundle 'sgelb/vTransfer'
+Bundle 'sjl/gundo.vim'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'tikhomirov/vim-glsl'
+Bundle 'tpope/vim-commentary'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-speeddating'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'vim-scripts/a.vim'
+Bundle 'wincent/Command-T'
+" Bundle 'vim-scripts/OmniCppComplete'
+" Bundle 'yakiang/excel.vim'
+
+call vundle#end()
+
+""""""""""""""""""""""
+" PLUGIN CONFIGURATION
+""""""""""""""""""""""
+
+filetype plugin on
+
+" A.VIM
+let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc'
+
+" AIRLINE
+let g:airline_theme='solarized'
+let g:airline_powerline_fonts=1
+let g:airline#extensions#whitespace#enabled = 0
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+
+" CTRLP
+let g:ctrlp_working_path_mode = 'ra'
+nmap <leader>p :CtrlP<cr>
+
+" GUNDO
+nnoremap <leader>u :GundoToggle<CR>
+
+" NEOCOMPLETE
+if has('lua')
+  let g:neocomplete#enable_at_startup = 0
+  " Use smartcase.
+  let g:neocomplete#enable_smart_case = 1
+endif
+
+
+" RAINBOW PARENTHESIS
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+" SYNTASTIC
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_cpp_checkers = ['cpplint']
+let g:syntastic_cpp_cpplint_exec = '/usr/bin/cpplint'
+let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+
+" TAGBAR
+map <F5> :TagbarToggle<CR>
+
+" TASKLIST
+let g:tlTokenList = ['TODO', 'FIXME', 'XXX', 'HACK']
+nnoremap <silent> <F7> :TaskListToggle<CR>
+
+
 """""""""""""""""
 " CUSTOM AUTOCMDS
 """""""""""""""""
@@ -121,7 +226,6 @@ set laststatus=2
 let g:bufferline_echo = 0
 set noshowmode
 set statusline=%f%m%r%h%w\ [%{&ff}]\ %y\ %{GitBranch()}\ %=\ [%l,%v][%p%%]\[%L]
-filetype plugin on
 
 " File type detection. Indent based on filetype. Recommended.
 filetype plugin indent on
@@ -176,105 +280,6 @@ function! InsertTabWrapper()
 endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
-
-""""""""
-" VUNDLE
-""""""""
-
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Bundle 'gmarik/Vundle.vim'
-
-" Bundles here:
-Bundle 'airblade/vim-gitgutter'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'bling/vim-airline'
-Bundle 'bullfight/vim-matchit'
-" Bundle 'chrisbra/csv.vim'
-" Bundle 'ervandew/supertab'
-" Bundle 'itszero/javacomplete'
-Bundle 'jiangmiao/auto-pairs'
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'kien/ctrlp.vim'
-Bundle 'majutsushi/tagbar'
-Bundle 'matze/vim-tex-fold'
-Bundle 'mileszs/ack.vim'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'octol/vim-cpp-enhanced-highlight'
-Bundle 'pangloss/vim-javascript'
-Bundle 'plasticboy/vim-markdown'
-"Bundle 'rstacruz/sparkup'
-" Bundle 'Rip-Rip/clang_complete'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/syntastic'
-Bundle 'sgelb/TaskList.vim'
-if has('lua')
-  Bundle 'Shougo/neocomplete.vim'
-endif
-" Bundle 'sgelb/vTransfer'
-Bundle 'sjl/gundo.vim'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'tikhomirov/vim-glsl'
-Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-speeddating'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'vim-scripts/a.vim'
-Bundle 'wincent/Command-T'
-" Bundle 'vim-scripts/OmniCppComplete'
-" Bundle 'yakiang/excel.vim'
-
-call vundle#end()
-
-""""""""""""""""""""""
-" PLUGIN CONFIGURATION
-""""""""""""""""""""""
-
-" AIRLINE
-let g:airline_theme='solarized'
-let g:airline_powerline_fonts=1
-let g:airline#extensions#whitespace#enabled = 0
-" Enable the list of buffers
-let g:airline#extensions#tabline#enabled = 1
-" Show just the filename
-let g:airline#extensions#tabline#fnamemod = ':t'
-
-
-" CTRLP
-let g:ctrlp_working_path_mode = 'ra'
-nmap <leader>p :CtrlP<cr>
-
-" GUNDO
-nnoremap <leader>u :GundoToggle<CR>
-
-" NEOCOMPLETE
-if has('lua')
-  let g:neocomplete#enable_at_startup = 0
-  " Use smartcase.
-  let g:neocomplete#enable_smart_case = 1
-endif
-
-
-" RAINBOW PARENTHESIS
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
-" SYNTASTIC
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_cpp_checkers = ['cpplint']
-let g:syntastic_cpp_cpplint_exec = '/usr/bin/cpplint'
-let g:syntastic_ruby_checkers = ['rubocop', 'mri']
-
-" TAGBAR
-map <F5> :TagbarToggle<CR>
-
-" TASKLIST
-let g:tlTokenList = ['TODO', 'FIXME', 'XXX', 'HACK']
-nnoremap <silent> <F7> :TaskListToggle<CR>
 
 
 """"""""""""""""""""
