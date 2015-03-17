@@ -226,6 +226,7 @@ alias pacman='sudo pacman'
 alias r='rsync -Ph'
 alias screen='screen -R'
 alias yjs="yuicompressor -o '.js$:.min.js' *.js"
+alias wcmake="x86_64-w64-mingw32-cmake"
 # }}}
 
 # suffix-aliases {{{
