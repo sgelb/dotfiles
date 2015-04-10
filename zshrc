@@ -330,6 +330,10 @@ hashes () {
   gpg --print-md '*' "${1}"
 }
 
+clang-format-diff () {
+  clang-format "${1}" | diff "${1}" - | colordiff
+}
+
 # github.com/rupa/z
 if [[ -f /usr/lib/z.sh ]]; then
   . /usr/lib/z.sh
