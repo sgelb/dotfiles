@@ -62,41 +62,27 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
 Bundle 'bullfight/vim-matchit'
-" Bundle 'chrisbra/csv.vim'
-" Bundle 'ervandew/supertab'
-" Bundle 'itszero/javacomplete'
 Bundle 'jiangmiao/auto-pairs'
-Bundle 'jelera/vim-javascript-syntax'
 Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'kien/ctrlp.vim'
 Bundle 'majutsushi/tagbar'
 Bundle 'matze/vim-tex-fold'
-Bundle 'mileszs/ack.vim'
-Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'octol/vim-cpp-enhanced-highlight'
-Bundle 'pangloss/vim-javascript'
 Bundle 'plasticboy/vim-markdown'
-"Bundle 'rstacruz/sparkup'
-" Bundle 'Rip-Rip/clang_complete'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'sgelb/TaskList.vim'
 if has('lua')
   Bundle 'Shougo/neocomplete.vim'
 endif
-" Bundle 'sgelb/vTransfer'
 Bundle 'sjl/gundo.vim'
-Bundle 'terryma/vim-multiple-cursors'
 Bundle 'tikhomirov/vim-glsl'
 Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-speeddating'
-Bundle 'tpope/vim-unimpaired'
+Bundle 'vhdirk/vim-cmake'
 Bundle 'vim-scripts/a.vim'
+Bundle 'vim-scripts/DoxygenToolkit.vim'
 Bundle 'wincent/Command-T'
-" Bundle 'vim-scripts/OmniCppComplete'
-" Bundle 'yakiang/excel.vim'
 
 call vundle#end()
 
@@ -108,20 +94,14 @@ filetype plugin on
 
 " A.VIM
 let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc'
+let g:alternateNoDefaultAlternate = 1
 
 " AIRLINE
 let g:airline_theme='solarized'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#whitespace#enabled = 0
-" Enable the list of buffers
-let g:airline#extensions#tabline#enabled = 1
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
-
-
-" CTRLP
-let g:ctrlp_working_path_mode = 'ra'
-nmap <leader>p :CtrlP<cr>
 
 " GUNDO
 nnoremap <leader>u :GundoToggle<CR>
@@ -132,7 +112,6 @@ if has('lua')
   " Use smartcase.
   let g:neocomplete#enable_smart_case = 1
 endif
-
 
 " RAINBOW PARENTHESIS
 au VimEnter * RainbowParenthesesToggle
@@ -205,13 +184,15 @@ augroup vimrcEx
 
 augroup END
 
+if has('lua')
 " <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-return neocomplete#close_popup() . "\<CR>"
-     " For no inserting <CR> key.
-     return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+       " For no inserting <CR> key.
+       return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  endfunction
+endif
 
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -246,15 +227,11 @@ map <leader>t :tabnew
 nmap j gj
 nmap k gk
 
+" For local replace
+nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
 
-" Move to the next buffer
-nmap <leader>k :bnext<CR>
-
-" Move to the previous buffer
-nmap <leader>j :bprevious<CR>"
-
-" Close the current buffer and move to the previous one
-nmap <leader>q :bp <BAR> bd #<CR>"
+" For global replace
+nnoremap gR gD:%s/<C-R>///gc<left><left><left>
 
 " Unbind the cursor keys in insert, normal and visual modes.
 " Force myself to use hjkl
@@ -263,7 +240,6 @@ for prefix in ['i', 'n', 'v']
     exe prefix . "noremap " . key . " <Nop>"
   endfor
 endfor
-
 
 """"""""""""""""""""""
 " MULTIPURPOSE TAB KEY
