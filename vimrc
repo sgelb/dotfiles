@@ -227,6 +227,10 @@ map <leader>t :tabnew
 nmap j gj
 nmap k gk
 
+
+" Open file under cursor in new tab
+nnoremap gf <c-w>gf
+
 " For local replace
 nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
 
