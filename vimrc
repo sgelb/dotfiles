@@ -12,7 +12,6 @@ set autoread
 set autowrite
 set backspace=indent,eol,start
 set colorcolumn=80
-set cursorline
 set enc=utf-8
 set expandtab
 set fenc=utf-8
@@ -168,7 +167,7 @@ augroup vimrcEx
   " Tex
   set grepprg=grep\ -nH\ $*
   autocmd FileType tex set tw=80
-  autocmd FileType tex nmap <F2> :!pdflatex %<cr>
+  autocmd FileType tex nmap <F2> :!latexmk<cr>
 
   " Make trailing whitespace be flagged as bad.
   autocmd BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
