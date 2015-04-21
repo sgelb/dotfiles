@@ -12,6 +12,7 @@
   ci = commit --verbose
   di = diff
   dc = diff --cached
+  ds = diff --stat
   aa = add --all
   st = status
 

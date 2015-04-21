@@ -167,8 +167,9 @@ augroup vimrcEx
 
   " Tex
   set grepprg=grep\ -nH\ $*
+  autocmd BufRead,BufNewFile *.{tex} set filetype=tex
   autocmd FileType tex set tw=80
-  autocmd FileType tex nmap <F2> :!pdflatex %<cr>
+  autocmd FileType tex nmap <F2> :!latexmk<cr>
 
   " Make trailing whitespace be flagged as bad.
   autocmd BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
