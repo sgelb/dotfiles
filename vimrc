@@ -12,7 +12,6 @@ set autoread
 set autowrite
 set backspace=indent,eol,start
 set colorcolumn=80
-set cursorline
 set enc=utf-8
 set expandtab
 set fenc=utf-8
