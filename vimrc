@@ -19,7 +19,7 @@ set hidden
 set history=1000
 set ignorecase smartcase  "ignorecase unless we use an uppercase
 set incsearch
-set mouse=a
+set mouse=r
 set nobackup
 set nocompatible
 set nohlsearch
@@ -65,6 +65,7 @@ Bundle 'jiangmiao/auto-pairs'
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'majutsushi/tagbar'
 Bundle 'matze/vim-tex-fold'
+Bundle 'mileszs/ack.vim'
 Bundle 'octol/vim-cpp-enhanced-highlight'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'scrooloose/nerdtree'
@@ -94,6 +95,11 @@ filetype plugin on
 " A.VIM
 let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc'
 let g:alternateNoDefaultAlternate = 1
+
+" ACK.VIM
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " AIRLINE
 let g:airline_theme='solarized'
