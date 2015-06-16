@@ -9,3 +9,6 @@ set -o errexit
 # Exit script if using unset variable
 set -o nounset
 
+# Exit with return code of last failed cmd in pipe
+set -o pipefail
+
