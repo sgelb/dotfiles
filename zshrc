@@ -6,7 +6,9 @@ if [[ -z "${DISPLAY}" ]] && [[ $(tty) =~ tty[123] ]]; then
 fi
 
 # exports and variables {{{
+export GOPATH=${HOME}/code/golang
 export PATH="${PATH}:${HOME}/bin:$(ruby -e 'print Gem.user_dir')/bin"
+export PATH="${PATH}:${GOPATH}/bin"
 export EDITOR='/usr/bin/vim'
 export SHELL='/bin/zsh'
 HISTFILE=${HOME}/.zsh_history
@@ -213,6 +215,7 @@ bindkey '\e[3~' delete-char
 # aliases {{{
 
 # disable spelling correction for these programs
+#
 alias cp='nocorrect cp'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv'
@@ -225,6 +228,7 @@ alias mp='mplayer.ext -vf screenshot -use-filename-title'
 alias pacman='sudo pacman'
 alias r='rsync -Ph'
 alias screen='screen -R'
+alias sxiv="sxiv-rifle"
 alias yjs="yuicompressor -o '.js$:.min.js' *.js"
 alias wcmake="x86_64-w64-mingw32-cmake"
 # }}}

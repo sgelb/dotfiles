@@ -61,6 +61,7 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
 Bundle 'bullfight/vim-matchit'
+Bundle 'fatih/vim-go'
 Bundle 'jiangmiao/auto-pairs'
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'majutsushi/tagbar'
@@ -128,6 +129,7 @@ au Syntax * RainbowParenthesesLoadBraces
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_cpp_checkers = ['cpplint']
 let g:syntastic_cpp_cpplint_exec = '/usr/bin/cpplint'
+let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 
 " TAGBAR
@@ -136,6 +138,15 @@ map <F5> :TagbarToggle<CR>
 " TASKLIST
 let g:tlTokenList = ['TODO', 'FIXME', 'XXX', 'HACK']
 nnoremap <silent> <F7> :TaskListToggle<CR>
+
+"VIM-GO
+let g:go_fmt_command = "goimports"
+" turn highlighting on
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1"
 
 
 """""""""""""""""
@@ -155,6 +166,9 @@ augroup vimrcEx
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal g`\"" |
     \ endif
+
+  " Go
+  au Filetype go nnoremap <leader>d :tab split <CR>:exe "GoDef"<CR>
 
   " Ruby
   autocmd FileType ruby set ai sw=2 sts=2 et
