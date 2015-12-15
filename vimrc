@@ -61,12 +61,14 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
 Bundle 'bullfight/vim-matchit'
+Bundle 'cespare/vim-toml'
 Bundle 'fatih/vim-go'
 Bundle 'jiangmiao/auto-pairs'
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'majutsushi/tagbar'
 Bundle 'matze/vim-tex-fold'
 Bundle 'mileszs/ack.vim'
+Bundle 'nsf/gocode', {'rtp': 'vim/'}
 Bundle 'octol/vim-cpp-enhanced-highlight'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'scrooloose/nerdtree'
@@ -83,6 +85,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'vhdirk/vim-cmake'
 Bundle 'vim-scripts/a.vim'
 Bundle 'vim-scripts/DoxygenToolkit.vim'
+Bundle 'vim-scripts/indentpython.vim'
 Bundle 'wincent/Command-T'
 
 call vundle#end()
@@ -126,7 +129,7 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
 " SYNTASTIC
-let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_checkers = ['python', 'flake8']
 let g:syntastic_cpp_checkers = ['cpplint']
 let g:syntastic_cpp_cpplint_exec = '/usr/bin/cpplint'
 let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
@@ -141,7 +144,8 @@ nnoremap <silent> <F7> :TaskListToggle<CR>
 
 "VIM-GO
 let g:go_fmt_command = "goimports"
-" turn highlighting on
+let g:go_fmt_fail_silently = 1
+" " turn highlighting on
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
@@ -167,15 +171,16 @@ augroup vimrcEx
     \   exe "normal g`\"" |
     \ endif
 
-  " Go
-  au Filetype go nnoremap <leader>d :tab split <CR>:exe "GoDef"<CR>
+  " " Go
+  " au Filetype go nnoremap <leader>d :tab split <CR>:exe "GoDef"<CR>
 
   " Ruby
   autocmd FileType ruby set ai sw=2 sts=2 et
 
   " Python
-  autocmd FileType python set sw=4 sts=4 et
+  autocmd FileType python set ts=4 sw=4 sts=4 et ai
   autocmd FileType python match BadWhitespace /^\t\+/
+  autocmd BufWritePre *.py :%s/\s\+$//e
 
   " Markdown
   autocmd! BufNewFile,BufRead *.md setlocal ft=
@@ -188,10 +193,7 @@ augroup vimrcEx
   set grepprg=grep\ -nH\ $*
   autocmd BufRead,BufNewFile *.{tex} set filetype=tex
   autocmd FileType tex set tw=80
-  autocmd FileType tex nmap <F2> :!latexmk<cr>
-
-  " Make trailing whitespace be flagged as bad.
-  autocmd BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+  autocmd FileType tex nmap <F2> :!latexmk -xelatex<cr>
 
   " MUTT
   autocmd BufRead /tmp/mutt* :set ft=mail

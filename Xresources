@@ -1,5 +1,5 @@
 URxvt.imLocale: en_US.utf8
-URxvt*font: xft:Source Code Pro for Powerline:size=11:antialias=true:hinting=true:
+URxvt*font: xft:Source Code Pro:size=11:antialias=true:hinting=true:
 URxvt.scrollBar: false
 URxvt.saveLines: 4096
 !URxvt.borderLess: true 
