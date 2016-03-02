@@ -22,14 +22,13 @@ export ACK_COLOR_MATCH='red'
 setopt APPEND_HISTORY # append history list to the history file
 setopt HIST_IGNORE_ALL_DUPS # rm older duplicate from history
 setopt HIST_IGNORE_SPACE # don't put to history if ^ is a space
-setopt HIST_SAVE_NODUPS
+setopt HIST_SAVE_NO_DUPS
 setopt SHARE_HISTORY
-setopt INC_APPEND_HISTORY
-setopt HISTORY_VERIFY
 setopt NO_CLOBBER # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt AUTO_CD # if a command is a folder, cd into it
 setopt NO_BEEP # avoid "beep"ing
 setopt EXTENDED_GLOB
+setopt NONOMATCH
 autoload zmv # rename
 
 REPORTTIME=5  # show report if cmd runs longer than 5 secondes
@@ -49,7 +48,6 @@ CYAN="%{[1;36m%}"
 WHITE="%{[1;37m%}"
 PINK="%{[1;35m%}"
 NO_COLOUR="%{[0m%}"
-
 
 # set color of leading ::
 if [ ${UID} == 1000 ]; then # normal user
