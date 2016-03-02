@@ -59,12 +59,11 @@ Bundle 'gmarik/Vundle.vim'
 " Bundles here:
 Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'bling/vim-airline'
 Bundle 'bullfight/vim-matchit'
 Bundle 'cespare/vim-toml'
 Bundle 'fatih/vim-go'
 Bundle 'jiangmiao/auto-pairs'
-Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'luochen1990/rainbow'
 Bundle 'majutsushi/tagbar'
 Bundle 'matze/vim-tex-fold'
 Bundle 'mileszs/ack.vim'
@@ -74,6 +73,8 @@ Bundle 'plasticboy/vim-markdown'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'sgelb/TaskList.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 if has('lua')
   Bundle 'Shougo/neocomplete.vim'
 endif
@@ -115,6 +116,9 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " GUNDO
 nnoremap <leader>u :GundoToggle<CR>
 
+" MARKDOWN
+let g:markdown_fenced_languages = ['html', 'vim', 'ruby', 'python', 'bash=sh']
+
 " NEOCOMPLETE
 if has('lua')
   let g:neocomplete#enable_at_startup = 0
@@ -123,17 +127,16 @@ if has('lua')
 endif
 
 " RAINBOW PARENTHESIS
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+let g:rainbow_active = 1
 
 " SYNTASTIC
 let g:syntastic_python_checkers = ['python', 'flake8']
 let g:syntastic_cpp_checkers = ['cpplint']
 let g:syntastic_cpp_cpplint_exec = '/usr/bin/cpplint'
-let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+" let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'errcheck']
+let g:syntastic_go_checkers = ['go', 'golint', 'govet']
+" let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go']  }
 
 " TAGBAR
 map <F5> :TagbarToggle<CR>
@@ -143,6 +146,7 @@ let g:tlTokenList = ['TODO', 'FIXME', 'XXX', 'HACK']
 nnoremap <silent> <F7> :TaskListToggle<CR>
 
 "VIM-GO
+let $GOPATH = $HOME."/code/golang/"
 let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 " " turn highlighting on
@@ -151,7 +155,11 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1"
-
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>e <Plug>(go-test)
+au FileType go nmap <Leader>n <Plug>(go-rename)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <Leader>i <Plug>(go-info)
 
 """""""""""""""""
 " CUSTOM AUTOCMDS
@@ -187,7 +195,7 @@ augroup vimrcEx
   autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
   autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
   autocmd BufRead,BufNewFile *.{md,mkd,markdown} set filetype=markdown
-  autocmd BufRead,BufNewFile *.{md,mkd,markdown} autocmd VimEnter * UniCycleOn
+  " autocmd BufRead,BufNewFile *.{md,mkd,markdown} autocmd VimEnter * UniCycleOn
 
   " Tex
   set grepprg=grep\ -nH\ $*

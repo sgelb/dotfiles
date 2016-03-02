@@ -10,9 +10,10 @@ now_playing_prefix = $b
 now_playing_suffix = $/b
 
 ##### columns settings #####
-song_columns_list_format = (20)[]{a} (50)[]{t|f:Title} (20)[]{b} $R{}(7f)[]{lr}
+song_columns_list_format = (3)[]{n} (20)[]{a} (50)[]{t|f:Title} (20)[]{b} $R{}(7f)[]{lr}
 
 ##### various settings #####
+playlist_display_mode = "classic"
 playlist_show_remaining_time = yes
 playlist_shorten_total_times = yes
 progressbar_look = ->

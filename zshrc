@@ -7,8 +7,7 @@ fi
 
 # exports and variables {{{
 export GOPATH=${HOME}/code/golang
-export PATH="${PATH}:${HOME}/bin:$(ruby -e 'print Gem.user_dir')/bin"
-export PATH="${PATH}:${GOPATH}/bin"
+export PATH="${PATH}:${HOME}/bin:${GOPATH}/bin:$(ruby -e 'print Gem.user_dir')/bin"
 export EDITOR='/usr/bin/vim'
 export SHELL='/bin/zsh'
 HISTFILE=${HOME}/.zsh_history
@@ -20,17 +19,17 @@ export ACK_COLOR_MATCH='red'
 
 # options {{{
 
-setopt append_history # append history list to the history file      
-setopt histignorealldups # rm older duplicate from history
-setopt histignorespace # don't put to history if ^ is a space 
-setopt histsavenodups
-setopt sharehistory
-setopt incappendhistory
-setopt NO_clobber # warning if file exists ('cat /dev/null > ~/.zshrc')
-setopt auto_cd # if a command is a folder, cd into it
-setopt nonomatch  # try to avoid the 'zsh: no matches found...'
-setopt nobeep # avoid "beep"ing
-setopt extendedglob
+setopt APPEND_HISTORY # append history list to the history file
+setopt HIST_IGNORE_ALL_DUPS # rm older duplicate from history
+setopt HIST_IGNORE_SPACE # don't put to history if ^ is a space
+setopt HIST_SAVE_NODUPS
+setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HISTORY_VERIFY
+setopt NO_CLOBBER # warning if file exists ('cat /dev/null > ~/.zshrc')
+setopt AUTO_CD # if a command is a folder, cd into it
+setopt NO_BEEP # avoid "beep"ing
+setopt EXTENDED_GLOB
 autoload zmv # rename
 
 REPORTTIME=5  # show report if cmd runs longer than 5 secondes
@@ -223,14 +222,15 @@ alias rm='nocorrect rm'
 
 alias feh='feh -x -d --scale-down'
 alias http='python -m http.server'
+alias latexmk='latexmk -xelatex'
 alias ls='ls -b -CF --color=auto'
 alias mp='mplayer.ext -vf screenshot -use-filename-title'
 alias pacman='sudo pacman'
 alias r='rsync -Ph'
 alias screen='screen -R'
 alias sxiv="sxiv-rifle"
-alias yjs="yuicompressor -o '.js$:.min.js' *.js"
 alias wcmake="x86_64-w64-mingw32-cmake"
+alias yjs="yuicompressor -o '.js$:.min.js' *.js"
 # }}}
 
 # suffix-aliases {{{
@@ -250,7 +250,7 @@ alias -g L=' | less'
 
 # unpack everything
 alias ex=aunpack
-compdef '_files -g "*.ace *.gz *.tgz *.bz2 *.tbz *.zip *.rar *.tar *.lha *.7z"' aunpack
+compdef '_files -g "*.ace *.gz *.tgz *.bz2 *.tbz *.zip *.ZIP *.rar *.tar *.lha *.7z"' aunpack
 
 # functions {{{
 
@@ -309,7 +309,7 @@ pub() {
     echo Press enter for update 
     read
     echo
-    yaourt -Syua
+    pacaur -Syu
     rehash
   elif [[ "${dist}" =~ "ubuntu|debian" ]]; then
     sudo apt-get update
@@ -349,4 +349,3 @@ fi
 if [[ -f  "$HOME/.local/share/dircolors/solarized256dark" ]]; then
   eval `dircolors $HOME/.local/share/dircolors/solarized256dark`
 fi
-
