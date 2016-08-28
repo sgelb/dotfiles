@@ -213,6 +213,7 @@ bindkey '\e[3~' delete-char
 
 # disable spelling correction for these programs
 #
+alias cal='cal -m -3'
 alias cp='nocorrect cp'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv'
@@ -220,7 +221,7 @@ alias rm='nocorrect rm'
 
 alias feh='feh -x -d --scale-down'
 alias http='python -m http.server'
-alias latexmk='latexmk -xelatex'
+alias latexmk='latexmk -lualatex'
 alias ls='ls -b -CF --color=auto'
 alias mp='mplayer.ext -vf screenshot -use-filename-title'
 alias pacman='sudo pacman'
@@ -251,6 +252,34 @@ alias ex=aunpack
 compdef '_files -g "*.ace *.gz *.tgz *.bz2 *.tbz *.zip *.ZIP *.rar *.tar *.lha *.7z"' aunpack
 
 # functions {{{
+
+# Auto-activate/deactive virtualenv
+function chpwd() {
+  if [ -e ".venv" ]; then
+    # Check for symlink pointing to virtualenv
+    if [ -L ".venv" ]; then
+      _VENV_PATH=$(readlink .venv)
+      # Check for directory containing virtualenv
+    elif [ -d ".venv" ]; then
+      _VENV_PATH=$(pwd -P)/.venv
+      # Check for file containing name of virtualenv
+    else
+      return
+    fi
+
+    # Check to see if already activated to avoid redundant activating
+    if [ "$VIRTUAL_ENV" != $_VENV_PATH ]; then
+      _VENV_NAME=$(basename `pwd`)
+      export VIRTUAL_ENV_DISABLE_PROMPT=1
+      export CD_VIRTUAL_ENV=true
+      source .venv/bin/activate
+    fi
+
+  elif [ $CD_VIRTUAL_ENV ]; then
+    deactivate
+    unset CD_VIRTUAL_ENV
+  fi
+}
 
 # mkdir && cd into it 
 mcd() { 
