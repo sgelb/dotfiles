@@ -12,6 +12,7 @@ set autoread
 set autowrite
 set backspace=indent,eol,start
 set colorcolumn=80
+set confirm
 set enc=utf-8
 set expandtab
 set fenc=utf-8
@@ -61,8 +62,10 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bullfight/vim-matchit'
 Bundle 'cespare/vim-toml'
+Bundle 'ctrlpvim/ctrlp.vim'
 Bundle 'fatih/vim-go'
 Bundle 'jiangmiao/auto-pairs'
+Bundle 'Konfekt/FastFold'
 Bundle 'luochen1990/rainbow'
 Bundle 'majutsushi/tagbar'
 Bundle 'matze/vim-tex-fold'
@@ -87,7 +90,6 @@ Bundle 'vhdirk/vim-cmake'
 Bundle 'vim-scripts/a.vim'
 Bundle 'vim-scripts/DoxygenToolkit.vim'
 Bundle 'vim-scripts/indentpython.vim'
-Bundle 'wincent/Command-T'
 
 call vundle#end()
 
@@ -112,31 +114,37 @@ let g:airline_powerline_fonts=1
 let g:airline#extensions#whitespace#enabled = 0
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
-
-" GUNDO
-nnoremap <leader>u :GundoToggle<CR>
+" Show all buffers if only one tab open
+let g:airline#extensions#tabline#enabled = 1
+" Load these extensions
+let g:airline_extensions = ['branch']
 
 " MARKDOWN
 let g:markdown_fenced_languages = ['html', 'vim', 'ruby', 'python', 'bash=sh']
 
 " NEOCOMPLETE
 if has('lua')
-  let g:neocomplete#enable_at_startup = 0
+  " Use neocomplete.
+  let g:neocomplete#enable_at_startup = 1
   " Use smartcase.
   let g:neocomplete#enable_smart_case = 1
+  " Set minimum syntax keyword length.
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  " Auto-close preview window
+  let g:neocomplete#enable_auto_close_preview = 1	
 endif
+
 
 " RAINBOW PARENTHESIS
 let g:rainbow_active = 1
 
 " SYNTASTIC
-let g:syntastic_python_checkers = ['python', 'flake8']
+let g:syntastic_python_checkers = ['python', 'flake8', 'pep8']
 let g:syntastic_cpp_checkers = ['cpplint']
 let g:syntastic_cpp_cpplint_exec = '/usr/bin/cpplint'
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']
-" let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'errcheck']
-let g:syntastic_go_checkers = ['go', 'golint', 'govet']
-" let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go']  }
+let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'gometalinter', 'gofmt']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go']  }
 
 " TAGBAR
 map <F5> :TagbarToggle<CR>
@@ -158,8 +166,9 @@ let g:go_highlight_build_constraints = 1"
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>e <Plug>(go-test)
 au FileType go nmap <Leader>n <Plug>(go-rename)
-au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <leader>c <Plug>(go-coverage-browser)
 au FileType go nmap <Leader>i <Plug>(go-info)
+au FileType go nmap <Leader>A <Plug>(go-alternate-edit)
 
 """""""""""""""""
 " CUSTOM AUTOCMDS
@@ -227,9 +236,6 @@ endif
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-au BufWinLeave ?* mkview 
-au BufWinEnter ?* silent loadview
-
 set backupdir=~/.vim/tmp,.
 set directory=~/.vim/tmp,.
 
@@ -247,19 +253,21 @@ filetype plugin indent on
 
 let mapleader=","
 
+" CTRLP
+nnoremap <leader>t :CtrlP<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
+
+" GUNDO
+nnoremap <leader>u :GundoToggle<CR>
+
 " Yank into system clipboard
 map <leader>y "*y
 " Need to overwrite default TaskList mapping 
 nnoremap <leader>v <Plug>TaskList
-map <leader>t :tabnew 
 
 " Sane movement over wrapped line
 nmap j gj
 nmap k gk
-
-
-" Open file under cursor in new tab
-nnoremap gf <c-w>gf
 
 " For local replace
 nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
