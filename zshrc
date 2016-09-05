@@ -345,6 +345,12 @@ pub() {
   fi
 }
 
+# markdown to pdf
+md2pdf () {
+  pandoc -V papersize:a4 -o ${1:r}.pdf ${1}
+  echo Created ${1:r}.pdf
+}
+
 # Download lorem ipsum picture
 lorempic () {
   wget http://lorempixel.com/640/480/cats/${1} -O $1:l.jpg
