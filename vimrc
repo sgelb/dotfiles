@@ -6,12 +6,12 @@ autocmd!
 """""""""""""""""""""""""""""
 " BASIC EDITING CONFIGURATION
 """""""""""""""""""""""""""""
-
 set autoindent
 set autoread
 set autowrite
 set backspace=indent,eol,start
 set colorcolumn=80
+set conceallevel=0
 set confirm
 set enc=utf-8
 set expandtab
@@ -43,7 +43,7 @@ set timeout timeoutlen=1000 ttimeoutlen=100  " Fix slow O inserts
 set vb
 set wrap
 
-syntax on
+syntax enable
 filetype off
 
 " Use the below highlight group when displaying bad whitespace is desired
@@ -64,6 +64,7 @@ Bundle 'bullfight/vim-matchit'
 Bundle 'cespare/vim-toml'
 Bundle 'ctrlpvim/ctrlp.vim'
 Bundle 'fatih/vim-go'
+Bundle 'godlygeek/tabular'
 Bundle 'jiangmiao/auto-pairs'
 Bundle 'Konfekt/FastFold'
 Bundle 'luochen1990/rainbow'
@@ -72,6 +73,7 @@ Bundle 'matze/vim-tex-fold'
 Bundle 'mileszs/ack.vim'
 Bundle 'nsf/gocode', {'rtp': 'vim/'}
 Bundle 'octol/vim-cpp-enhanced-highlight'
+Bundle 'pangloss/vim-javascript'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
@@ -153,10 +155,23 @@ map <F5> :TagbarToggle<CR>
 let g:tlTokenList = ['TODO', 'FIXME', 'XXX', 'HACK']
 nnoremap <silent> <F7> :TaskListToggle<CR>
 
-"VIM-GO
+" VIM-JAVASCRIPT
+" see conceallevel
+let g:javascript_conceal_function       = "ƒ"
+let g:javascript_conceal_null           = "ø"
+let g:javascript_conceal_this           = "@"
+let g:javascript_conceal_return         = "⇚"
+let g:javascript_conceal_undefined      = "¿"
+let g:javascript_conceal_NaN            = "ℕ"
+let g:javascript_conceal_prototype      = "¶"
+let g:javascript_conceal_static         = "•"
+let g:javascript_conceal_super          = "Ω"
+let g:javascript_conceal_arrow_function = "⇒"
+
+" VIM-GO
 let $GOPATH = $HOME."/code/golang/"
 let g:go_fmt_command = "goimports"
-let g:go_fmt_fail_silently = 1
+let g:go_fmt_fail_silently = 0
 " " turn highlighting on
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
