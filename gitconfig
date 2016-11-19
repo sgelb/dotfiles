@@ -14,7 +14,9 @@
   dc = diff --cached
   ds = diff --stat
   aa = add --all
-  st = status
+  st = status --short --branch
+
+  it = !git init && git commit --allow-empty -m 'Initial commit'
 
   # Fancy logging.
   # h = head
