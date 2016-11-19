@@ -218,6 +218,7 @@ alias cp='nocorrect cp'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv'
 alias rm='nocorrect rm'
+alias pacaur='pacaur --color always'
 
 alias feh='feh -x -d --scale-down'
 alias http='python -m http.server'
@@ -283,7 +284,7 @@ function chpwd() {
 
 # mkdir && cd into it 
 mcd() { 
-  mkdir "$@"; cd "$@" 
+  mkdir "${1}" && cd "$_" 
 }
 
 # only slash should be considered as a word separator:
@@ -371,10 +372,16 @@ clang-format-diff () {
   clang-format "${1}" | diff "${1}" - | colordiff
 }
 
+# show disk usage
+dus () {
+  du -h --max-depth "${2:-1}" "${1:-.}" | sort -hr
+}
+
 # github.com/rupa/z
 if [[ -f /usr/lib/z.sh ]]; then
   . /usr/lib/z.sh
 fi
+
 
 # }}}
 
