@@ -19,6 +19,7 @@ dotfiles = {
     'screenrc': '~/.screenrc',
     'skel': '~/.vim/skel',
     'vimrc': '~/.vimrc',
+    'xbindkeysrc': '~/.xbindkeysrc',
     'xinitrc': '~/.xinitrc',
     'Xresources': '~/.Xresources',
     'zshrc': '~/.zshrc',
