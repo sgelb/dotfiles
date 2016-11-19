@@ -22,7 +22,7 @@ AUTHOR="%C(bold blue)<%an>%Creset"
 REFS="%C(bold red)%d%Creset"
 SUBJECT="%s"
 
-FORMAT="$HASH}$RELATIVE_TIME}$AUTHOR}$REFS $SUBJECT"
+FORMAT="$HASH}$RELATIVE_TIME}$AUTHOR$REFS $SUBJECT"
 
 ANSI_BLACK='\033[30m'
 ANSI_BLACK_BOLD='\033[0;30;1m'
@@ -49,7 +49,7 @@ show_git_head() {
 }
 
 pretty_git_log() {
-  git log --graph --pretty="tformat:${FORMAT}" "$@" |
+  git log --decorate=short --date=relative --color --graph --pretty="tformat:${FORMAT}" "$@" |
   # Remove ago from relative commit time
   sed -Ee 's/(^[^<]*) ago\)/\1)/' |
   # Replace (2 minutes) with (2 mins)
@@ -58,9 +58,9 @@ pretty_git_log() {
   sed -Ee 's/(^[^<]*) seconds\)/\1 secs)/' |
   # Replace (2 years, 5 months) with (2 years)
   sed -Ee 's/(^[^<]*), [[:digit:]]+ .*months?\)/\1)/' |
-  # Line columns up based on } delimiter
-  column -t -o $'\t' -s '}' |
-  # Use 4 space tab
+  # # Line columns up based on } delimiter
+  # column -t -o $'\t' -s '}' |
+  # # Use 4 space tab
   expand -t 4 - |
   # Color merge commits specially
   sed -Ee "s/(Merge (branch|remote-tracking branch|pull request) .*$)/$(printf $ANSI_BLUE)\1$(printf $ANSI_RESET)/" |
