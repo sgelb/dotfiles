@@ -14,7 +14,8 @@
   dc = diff --cached
   ds = diff --stat
   aa = add --all
-  st = status --short --branch
+  st = status
+  ss = status --short --branch
 
   it = !git init && git commit --allow-empty -m 'Initial commit'
 
@@ -27,3 +28,9 @@
   hp = "!. ~/.githelpers && show_git_head"
   l = "!. ~/.githelpers && pretty_git_log"
   la = !git l --all
+[diff]
+  tool = icdiff
+[difftool]
+  prompt = false
+[difftool "icdiff"]
+  cmd = /usr/bin/icdiff --line-numbers $LOCAL $REMOTE

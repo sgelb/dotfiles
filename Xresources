@@ -1,12 +1,15 @@
 URxvt.imLocale: en_US.utf8
-URxvt.font: xft:PragmataPro:size=10:antialias=true:autohint=false:
-URxvt.boldFont: xft:PragmataPro:style=bold:size=10:antialias=true:autohint=false:
-URxvt.italicFont: xft:PragmataPro:style=italic:size=10:antialias=true:autohint=false:
+URxvt.font: xft:iosevka:size=10:antialias=true:autohint=true:
+URxvt.boldFont: xft:iosevka:style=bold:size=10:antialias=true:autohint=true:
+URxvt.italicFont: xft:iosevka:style=italic:size=10:antialias=true:autohint=true:
+URxvt.letterSpace: -1
 
 URxvt.scrollBar: false
 URxvt.saveLines: 4096
 URxvt.geometry: 80x25
 URxvt*secondaryScroll: true
+
+URxvt.perl-ext-common: selection-to-clipboard
 
 URxvt.intensityStyles: false
 
@@ -36,7 +39,7 @@ URxvt.intensityStyles: false
 
 *background:              S_base03
 *foreground:              S_base0
-*fading:                  40
+*fading:                  20
 *fadeColor:               S_base03
 *cursorColor:             S_base1
 *pointerColorBackground:  S_base01

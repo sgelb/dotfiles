@@ -48,6 +48,13 @@
 "amixer sset Master toggle"
   XF86AudioMute
 
+"/usr/bin/xbacklight -inc 20 -time 0"
+  XF86MonBrightnessUp
+
+"/usr/bin/xbacklight -dec 20 -time 0"
+  XF86MonBrightnessDown
+
+
 ##################################
 # End of xbindkeys configuration #
 ##################################

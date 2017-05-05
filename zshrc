@@ -7,7 +7,7 @@ fi
 
 # exports and variables {{{
 export GOPATH=${HOME}/code/golang
-export PATH="${PATH}:${HOME}/bin:${GOPATH}/bin:$(ruby -e 'print Gem.user_dir')/bin"
+export PATH="${HOME}/.node_modules_global/bin:${HOME}/bin:${GOPATH}/bin:$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
 export EDITOR='/usr/bin/vim'
 export SHELL='/bin/zsh'
 HISTFILE=${HOME}/.zsh_history
@@ -52,16 +52,19 @@ NO_COLOUR="%{[0m%}"
 # set color of leading ::
 if [ ${UID} == 1000 ]; then # normal user
   PCOL=${PINK}
+  SYM="★"
 elif [ ${UID} == 0 ]; then # root
   PCOL=${RED}
-else 
+  SYM="ROOT"
+else
   PCOL=${BLUE}
+  SYM="★"
 fi
 
 # show ip if connected via ssh
-if [ ${SSH_CONNECTION} ]; then 
+if [ ${SSH_CONNECTION} ]; then
   SSH="[${SSH_CONNECTION%% *}]";
-else 
+else
   SSH="";
 fi
 
@@ -96,10 +99,10 @@ remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
 # Show commit/push/pull status
 if [[ -n ${remote} ]] ; then
   ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
-  (( ${ahead} )) && gitstatus+=( "${ahead}⇧" )
+  (( ${ahead} )) && gitstatus+=( "${ahead}↑" )
 
   behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
-  (( ${behind} )) && gitstatus+=( "${behind}⇧" )
+  (( ${behind} )) && gitstatus+=( "${behind}↓" )
 
   (( !${ahead} && !${behind} )) && gitstatus+=( "≈" )
 
@@ -109,19 +112,19 @@ else
 fi
 }
 
-case ${TERM} in 
+case ${TERM} in
   (xterm*|rxvt*|screen*)
-    print -Pn "\e]0;:: %~\a" 
+    print -Pn "\e]0;:: %~\a"
     precmd() {
       vcs_info
-      print -Pn "\e]0;:: %~\a" 
+      print -Pn "\e]0;:: %~\a"
     }
     preexec() { print -Pn "\e]0;:: ${1}\a" }
     ;;
 esac
 
 # Put everything together
-PROMPT='${RED}${EXITCODE}${WHITE}${PCOL}::${SSH}${NO_COLOUR} %40<...<%B%~%b%<< ${vcs_info_msg_0_}%# '
+PROMPT='${RED}${EXITCODE}${WHITE}${PCOL}${SYM}${SSH}${NO_COLOUR} %40<...<%B%~%b%<< ${vcs_info_msg_0_}'
 # }}}
 
 
@@ -190,7 +193,7 @@ zstyle ':completion:*:processes-names' command 'ps c -u ${USER} -o command | uni
 zstyle ':completion:*:processes' command 'ps --forest -au${USER} -o pid,time,cmd | grep -v "ps .* pid,time,cmd"'
 
 # disable hostname completion
-zstyle ':completion:*' hosts off 
+zstyle ':completion:*' hosts off
 
 # }}}
 
@@ -222,12 +225,12 @@ alias pacaur='pacaur --color always'
 
 alias feh='feh -x -d --scale-down'
 alias http='python -m http.server'
-alias latexmk='latexmk -lualatex'
+alias latexmk='latexmk -pdflatex -file-line-error -synctex=1'
 alias ls='ls -b -CF --color=auto'
 alias mp='mplayer.ext -vf screenshot -use-filename-title'
 alias pacman='sudo pacman'
 alias r='rsync -Ph'
-alias screen='screen -R'
+alias screen='screen -D -R'
 alias sxiv="sxiv-rifle"
 alias wcmake="x86_64-w64-mingw32-cmake"
 alias yjs="yuicompressor -o '.js$:.min.js' *.js"
@@ -235,12 +238,12 @@ alias yjs="yuicompressor -o '.js$:.min.js' *.js"
 
 # suffix-aliases {{{
 alias -s jpg=sxiv
-alias -s md=vim 
-alias -s mkd=vim 
+alias -s md=vim
+alias -s mkd=vim
 alias -s pdf=zathura
 alias -s png=sxiv
 alias -s ps=zathura
-alias -s txt=vim 
+alias -s txt=vim
 # }}}
 
 # global aliases {{{
@@ -282,9 +285,9 @@ function chpwd() {
   fi
 }
 
-# mkdir && cd into it 
-mcd() { 
-  mkdir "${1}" && cd "$_" 
+# mkdir && cd into it
+mcd() {
+  mkdir "${1}" && cd "$_"
 }
 
 # only slash should be considered as a word separator:
@@ -293,7 +296,7 @@ slash-backward-kill-word() {
   zle backward-kill-word
 }
 zle -N slash-backward-kill-word
-bindkey '^w' slash-backward-kill-word 
+bindkey '^w' slash-backward-kill-word
 
 # expand '...' to '../..'
 rationalise-dot() {
@@ -319,8 +322,8 @@ TRAPINT() {
 
 # Show ips
 showmyips() {
-  ip addr show | grep "inet " | awk '{print $NF "\t\t" $2}'
-  echo "external\t$(curl --silent http://ipecho.net/plain)"
+  ip addr show | egrep -o 'inet ([0-9]{1,3}\.?){4}' | cut -d " " -f 2
+  curl --silent 192.168.2.1/bootstrapDef.js | egrep -o '([0-9]{1,3}\.?){4}'
 }
 
 # Update packages
@@ -334,11 +337,16 @@ pub() {
       sed -r 's/.*<title>(.*)<\/title>.*archlinux.org,([0-9]{4}-[0-9]{2}-[0-9]{2}).*/\2 \1/' | \
       head -3
     echo
-    echo Press enter for update 
+    echo Press enter for update
     read
-    echo
     pacaur -Syu
+    sudo chkboot
     rehash
+    if [ $(df --output=avail / | tail -1) -lt 1000000 ];then
+      echo :: Deleting pacman cache
+      # remove pacman cache if less than 1GB free space
+      yes | pacaur -q -Scc &> /dev/null
+    fi
   elif [[ "${dist}" =~ "ubuntu|debian" ]]; then
     sudo apt-get update
     sudo apt-get -d dist-upgrade

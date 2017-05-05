@@ -12,6 +12,7 @@ set autowrite
 set backspace=indent,eol,start
 set colorcolumn=80
 set conceallevel=0
+set cursorline
 set confirm
 set enc=utf-8
 set expandtab
@@ -46,60 +47,61 @@ set wrap
 syntax enable
 filetype off
 
-" Use the below highlight group when displaying bad whitespace is desired
-highlight BadWhitespace ctermbg=red guibg=red
+""""""
+" PLUG
+""""""
 
-""""""""
-" VUNDLE
-""""""""
+call plug#begin()
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Bundle 'gmarik/Vundle.vim'
+Plug 'Konfekt/FastFold'
+Plug 'Shougo/neocomplete.vim', has('lua') ? {} : {'on': []}
+Plug 'SirVer/ultisnips'
+Plug 'airblade/vim-gitgutter'
+Plug 'bullfight/vim-matchit'
+Plug 'cespare/vim-toml'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoInstallBinaries'}
+Plug 'godlygeek/tabular'
+Plug 'honza/vim-snippets'
+Plug 'jiangmiao/auto-pairs'
+Plug 'lervag/vimtex', {'for': 'tex'}
+Plug 'luochen1990/rainbow'
+Plug 'majutsushi/tagbar'
+Plug 'matze/vim-tex-fold', {'for': 'tex'}
+Plug 'mileszs/ack.vim'
+Plug 'lifepillar/vim-solarized8'
+" Plug 'mxw/vim-jsx'
+Plug 'nsf/gocode', {'rtp': 'vim/'}
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'octol/vim-cpp-enhanced-highlight', {'for': 'cpp'}
+Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
+Plug 'sbdchd/neoformat'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'sgelb/TaskList.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'sjl/gundo.vim'
+Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
+Plug 'tikhomirov/vim-glsl', {'for': 'glsl'}
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-fugitive'
+Plug 'vhdirk/vim-cmake'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-scripts/DoxygenToolkit.vim'
+Plug 'vim-scripts/a.vim'
+Plug 'vim-scripts/indentpython.vim'
+Plug 'vimwiki/vimwiki'
+Plug 'w0rp/ale'
 
-" Bundles here:
-Bundle 'airblade/vim-gitgutter'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'bullfight/vim-matchit'
-Bundle 'cespare/vim-toml'
-Bundle 'ctrlpvim/ctrlp.vim'
-Bundle 'fatih/vim-go'
-Bundle 'godlygeek/tabular'
-Bundle 'jiangmiao/auto-pairs'
-Bundle 'Konfekt/FastFold'
-Bundle 'luochen1990/rainbow'
-Bundle 'majutsushi/tagbar'
-Bundle 'matze/vim-tex-fold'
-Bundle 'mileszs/ack.vim'
-Bundle 'nsf/gocode', {'rtp': 'vim/'}
-Bundle 'octol/vim-cpp-enhanced-highlight'
-Bundle 'pangloss/vim-javascript'
-Bundle 'plasticboy/vim-markdown'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/syntastic'
-Bundle 'sgelb/TaskList.vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-if has('lua')
-  Bundle 'Shougo/neocomplete.vim'
-endif
-Bundle 'sjl/gundo.vim'
-Bundle 'tikhomirov/vim-glsl'
-Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-fugitive'
-Bundle 'vhdirk/vim-cmake'
-Bundle 'vim-scripts/a.vim'
-Bundle 'vim-scripts/DoxygenToolkit.vim'
-Bundle 'vim-scripts/indentpython.vim'
 
-call vundle#end()
+call plug#end()
+
 
 """"""""""""""""""""""
 " PLUGIN CONFIGURATION
 """"""""""""""""""""""
-
-filetype plugin on
 
 " A.VIM
 let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc'
@@ -111,18 +113,29 @@ if executable('ag')
 endif
 
 " AIRLINE
+let g:airline_powerline_fonts = 1
 let g:airline_theme='solarized'
-let g:airline_powerline_fonts=1
-let g:airline#extensions#whitespace#enabled = 0
-" Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
-" Show all buffers if only one tab open
 let g:airline#extensions#tabline#enabled = 1
-" Load these extensions
 let g:airline_extensions = ['branch']
+let g:airline_section_error = '%{ALEGetStatusLine()}'
+
+" ALE
+let g:ale_statusline_format = ['‼ %d', '! %d', '✓']
+" let g:ale_statusline_format = ['%d error', '%d warning', '']
+
+" BETTER-WHITESPACE
+autocmd BufEnter * EnableStripWhitespaceOnSave
+
+" CTRLP
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 " MARKDOWN
 let g:markdown_fenced_languages = ['html', 'vim', 'ruby', 'python', 'bash=sh']
+let g:vim_markdown_folding_disabled = 1
+
+" NEOFORMAT
+let g:neoformat_enabled_javascript = ['prettier']
 
 " NEOCOMPLETE
 if has('lua')
@@ -133,20 +146,21 @@ if has('lua')
   " Set minimum syntax keyword length.
   let g:neocomplete#sources#syntax#min_keyword_length = 3
   " Auto-close preview window
-  let g:neocomplete#enable_auto_close_preview = 1	
+  let g:neocomplete#enable_auto_close_preview = 1
 endif
-
 
 " RAINBOW PARENTHESIS
 let g:rainbow_active = 1
 
 " SYNTASTIC
-let g:syntastic_python_checkers = ['python', 'flake8', 'pep8']
 let g:syntastic_cpp_checkers = ['cpplint']
 let g:syntastic_cpp_cpplint_exec = '/usr/bin/cpplint'
-let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'gometalinter', 'gofmt']
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go']  }
+let g:syntastic_python_checkers = ['python', 'flake8', 'pep8']
+let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+let g:syntastic_html_checkers = ['tidy']
 
 " TAGBAR
 map <F5> :TagbarToggle<CR>
@@ -154,6 +168,9 @@ map <F5> :TagbarToggle<CR>
 " TASKLIST
 let g:tlTokenList = ['TODO', 'FIXME', 'XXX', 'HACK']
 nnoremap <silent> <F7> :TaskListToggle<CR>
+
+" ULTISNIP
+let g:UltiSnipsExpandTrigger="<tab>"
 
 " VIM-JAVASCRIPT
 " see conceallevel
@@ -184,6 +201,13 @@ au FileType go nmap <Leader>n <Plug>(go-rename)
 au FileType go nmap <leader>c <Plug>(go-coverage-browser)
 au FileType go nmap <Leader>i <Plug>(go-info)
 au FileType go nmap <Leader>A <Plug>(go-alternate-edit)
+
+" VIM-JSX
+" Allow JSX in normal JS files"
+let g:jsx_ext_required = 0
+
+" VIMWIKI
+let g:vimwiki_list = [{'path': '~/.local/share/vimwiki'}]
 
 """""""""""""""""
 " CUSTOM AUTOCMDS
@@ -225,7 +249,7 @@ augroup vimrcEx
   set grepprg=grep\ -nH\ $*
   autocmd BufRead,BufNewFile *.{tex} set filetype=tex
   autocmd FileType tex set tw=80
-  autocmd FileType tex nmap <F2> :!latexmk -xelatex<cr>
+  autocmd FileType tex nmap <F2> :!latexmk -xelatex -file-line-error -synctex=1<cr>
 
   " MUTT
   autocmd BufRead /tmp/mutt* :set ft=mail
@@ -233,8 +257,11 @@ augroup vimrcEx
   " Load templates for new files
   autocmd BufNewFile  *.java	0r ~/.vim/skel/java | %s/<FILE>/\=expand("%:t:r")/g
   autocmd BufNewFile  *.py	0r ~/.vim/skel/py | call LoadTemplate()
-  autocmd BufNewFile  *.rb	0r ~/.vim/skel/rb 
+  autocmd BufNewFile  *.rb	0r ~/.vim/skel/rb
   autocmd BufNewFile  *.sh	0r ~/.vim/skel/sh | call LoadTemplate()
+
+  " Auto-format javascript on save
+  autocmd BufWritePre *.js Neoformat
 
 augroup END
 
@@ -257,6 +284,7 @@ set directory=~/.vim/tmp,.
 set laststatus=2
 let g:bufferline_echo = 0
 set noshowmode
+"
 set statusline=%f%m%r%h%w\ [%{&ff}]\ %y\ %{GitBranch()}\ %=\ [%l,%v][%p%%]\[%L]
 
 " File type detection. Indent based on filetype. Recommended.
@@ -277,18 +305,21 @@ nnoremap <leader>u :GundoToggle<CR>
 
 " Yank into system clipboard
 map <leader>y "*y
-" Need to overwrite default TaskList mapping 
+" Need to overwrite default TaskList mapping
 nnoremap <leader>v <Plug>TaskList
 
 " Sane movement over wrapped line
 nmap j gj
 nmap k gk
 
-" For local replace
-nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
+" nicely copy&paste from clipboard
+set clipboard=unnamedplus
 
-" For global replace
-nnoremap gR gD:%s/<C-R>///gc<left><left><left>
+" " For local replace
+" nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
+
+" " For global replace
+" nnoremap gR gD:%s/<C-R>///gc<left><left><left>
 
 " Unbind the cursor keys in insert, normal and visual modes.
 " Force myself to use hjkl
@@ -364,5 +395,6 @@ endfun
 " COLOR
 """""""
 
-set background=dark
-colorscheme solarized
+" set background=dark
+colorscheme solarized8_dark
+hi! clear cursorline
