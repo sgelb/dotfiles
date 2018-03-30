@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # This program uses Python3
 
@@ -19,6 +18,7 @@ dotfiles = {
     'screenrc': '~/.screenrc',
     'skel': '~/.vim/skel',
     'vimrc': '~/.vimrc',
+    'init.vim': '~/.config/nvim/init.vim',
     'xbindkeysrc': '~/.xbindkeysrc',
     'xinitrc': '~/.xinitrc',
     'Xresources': '~/.Xresources',
