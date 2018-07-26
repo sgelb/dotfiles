@@ -7,8 +7,8 @@ fi
 
 # exports and variables {{{
 export GOPATH=${HOME}/code/golang
-export PATH="${HOME}/.node_modules_global/bin:${HOME}/bin:${GOPATH}/bin:$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
-export EDITOR='/usr/bin/vim'
+export PATH="${PATH}:${HOME}/bin:${HOME}/.local/bin:${HOME}/.node_modules_global/bin:${GOPATH}/bin:${HOME}/.npm/bin:$(ruby -e 'print Gem.user_dir')/bin"
+export EDITOR='/usr/bin/nvim'
 export SHELL='/bin/zsh'
 HISTFILE=${HOME}/.zsh_history
 
@@ -16,12 +16,11 @@ HISTFILE=${HOME}/.zsh_history
 export ACK_COLOR_MATCH='red'
 # }}}
 
-
 # options {{{
 
 setopt APPEND_HISTORY # append history list to the history file
 setopt HIST_IGNORE_ALL_DUPS # rm older duplicate from history
-setopt HIST_IGNORE_SPACE # don't put to history if ^ is a space
+setopt HIST_IGNORE_SPACE # dont put to history if ^ is a space
 setopt HIST_SAVE_NO_DUPS
 setopt SHARE_HISTORY
 setopt NO_CLOBBER # warning if file exists ('cat /dev/null > ~/.zshrc')
@@ -34,8 +33,6 @@ autoload zmv # rename
 REPORTTIME=5  # show report if cmd runs longer than 5 secondes
 HISTSIZE=50000
 SAVEHIST=5000 # useful for setopt append_history
-
-
 # }}}
 
 # statusbar/prompt {{{
@@ -52,13 +49,13 @@ NO_COLOUR="%{[0m%}"
 # set color of leading ::
 if [ ${UID} == 1000 ]; then # normal user
   PCOL=${PINK}
-  SYM="★"
+  SYM="::"
 elif [ ${UID} == 0 ]; then # root
   PCOL=${RED}
   SYM="ROOT"
 else
   PCOL=${BLUE}
-  SYM="★"
+  SYM="::"
 fi
 
 # show ip if connected via ssh
@@ -113,13 +110,14 @@ fi
 }
 
 case ${TERM} in
-  (xterm*|rxvt*|screen*)
+  (termite*|xterm*|rxvt*|screen*)
     print -Pn "\e]0;:: %~\a"
     precmd() {
       vcs_info
       print -Pn "\e]0;:: %~\a"
     }
-    preexec() { print -Pn "\e]0;:: ${1}\a" }
+    local CMD1=${${1}//\%/%%}
+    preexec() { print -Pn "\e]0;:: ${CMD1}\a" }
     ;;
 esac
 
@@ -216,34 +214,35 @@ bindkey '\e[3~' delete-char
 
 # disable spelling correction for these programs
 #
-alias cal='cal -m -3'
 alias cp='nocorrect cp'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv'
 alias rm='nocorrect rm'
-alias pacaur='pacaur --color always'
 
+alias aria='aria2c --continue --max-connection-per-server=4 --max-overall-download-limit=450k --summary-interval=0'
+alias cal='cal -w -m'
 alias feh='feh -x -d --scale-down'
 alias http='python -m http.server'
-alias latexmk='latexmk -pdflatex -file-line-error -synctex=1'
 alias ls='ls -b -CF --color=auto'
-alias mp='mplayer.ext -vf screenshot -use-filename-title'
+alias mpv='mpv --save-position-on-quit'
+alias pacaur='pacaur --color always'
 alias pacman='sudo pacman'
 alias r='rsync -Ph'
-alias screen='screen -D -R'
+# alias screen='screen -D -R'
+alias tmux='tmux new-session -A -s main'
+alias sub="subliminal download -s -l en -w 4"
 alias sxiv="sxiv-rifle"
-alias wcmake="x86_64-w64-mingw32-cmake"
-alias yjs="yuicompressor -o '.js$:.min.js' *.js"
+alias wiki='nvim -c VimwikiIndex'
 # }}}
 
 # suffix-aliases {{{
 alias -s jpg=sxiv
-alias -s md=vim
-alias -s mkd=vim
+alias -s md=nvim
+alias -s mkd=nvim
 alias -s pdf=zathura
 alias -s png=sxiv
 alias -s ps=zathura
-alias -s txt=vim
+alias -s txt=nvim
 # }}}
 
 # global aliases {{{
@@ -257,37 +256,10 @@ compdef '_files -g "*.ace *.gz *.tgz *.bz2 *.tbz *.zip *.ZIP *.rar *.tar *.lha *
 
 # functions {{{
 
-# Auto-activate/deactive virtualenv
-function chpwd() {
-  if [ -e ".venv" ]; then
-    # Check for symlink pointing to virtualenv
-    if [ -L ".venv" ]; then
-      _VENV_PATH=$(readlink .venv)
-      # Check for directory containing virtualenv
-    elif [ -d ".venv" ]; then
-      _VENV_PATH=$(pwd -P)/.venv
-      # Check for file containing name of virtualenv
-    else
-      return
-    fi
-
-    # Check to see if already activated to avoid redundant activating
-    if [ "$VIRTUAL_ENV" != $_VENV_PATH ]; then
-      _VENV_NAME=$(basename `pwd`)
-      export VIRTUAL_ENV_DISABLE_PROMPT=1
-      export CD_VIRTUAL_ENV=true
-      source .venv/bin/activate
-    fi
-
-  elif [ $CD_VIRTUAL_ENV ]; then
-    deactivate
-    unset CD_VIRTUAL_ENV
-  fi
-}
-
-# mkdir && cd into it
+# mkdir if neccessary && cd into it
+compdef mcd=cd
 mcd() {
-  mkdir "${1}" && cd "$_"
+  mkdir -p "${1}" 2> /dev/null; cd "${1}"
 }
 
 # only slash should be considered as a word separator:
@@ -335,17 +307,16 @@ pub() {
       tr -d '\n\r' | \
       sed 's/<\/item>/<\/item>\n/g' | \
       sed -r 's/.*<title>(.*)<\/title>.*archlinux.org,([0-9]{4}-[0-9]{2}-[0-9]{2}).*/\2 \1/' | \
-      head -3
+      head -3 | recode html..ascii
     echo
     echo Press enter for update
     read
-    pacaur -Syu
-    sudo chkboot
+    yay -Syu
     rehash
-    if [ $(df --output=avail / | tail -1) -lt 1000000 ];then
+    if [ $(df --output=avail / | tail -1) -lt 5000000 ];then
       echo :: Deleting pacman cache
-      # remove pacman cache if less than 1GB free space
-      yes | pacaur -q -Scc &> /dev/null
+      # remove pacman cache if less than 5GB free space
+      yes | yay -q -Scc &> /dev/null
     fi
   elif [[ "${dist}" =~ "ubuntu|debian" ]]; then
     sudo apt-get update
@@ -365,6 +336,10 @@ lorempic () {
   wget http://lorempixel.com/640/480/cats/${1} -O $1:l.jpg
 }
 
+weather() {
+  curl wttr.in
+}
+
 # whiten scan
 whiteboard () {
   convert ${1} -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel RBG -level 60%,91%,0.1 ${2};
@@ -382,14 +357,37 @@ clang-format-diff () {
 
 # show disk usage
 dus () {
-  du -h --max-depth "${2:-1}" "${1:-.}" | sort -hr
+  # dus $folder $depth
+  du -h --max-depth "${2:-1}" "${1:-.}" | sort -h
+}
+
+# get SHA256 of server certificate
+servercert () {
+  msmtp --serverinfo --tls --tls-certcheck=off --port 587 --host="${1}" | grep SHA256 | sed -e 's/^.*SHA256: //'
 }
 
 # github.com/rupa/z
-if [[ -f /usr/lib/z.sh ]]; then
-  . /usr/lib/z.sh
-fi
+[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 
+
+calc () {
+  echo "scale=4; ${@}" | bc -l
+}
+
+hrefs () {
+  lynx -nonumbers -dump -hiddenlinks=listonly "${1}"
+}
+
+# recursive pull all git repos
+pullall () {
+  find . -type d -name .git -exec sh -c "cd \"{}\"/../ && pwd && git pull" \;
+}
+
+newerthan () {
+  folder=${1:-.}
+  ago=${2:-"1 day ago"}
+  find "${folder}" -newermt "${ago}" -type f -print
+}
 
 # }}}
 
@@ -397,3 +395,4 @@ fi
 if [[ -f  "$HOME/.local/share/dircolors/solarized256dark" ]]; then
   eval `dircolors $HOME/.local/share/dircolors/solarized256dark`
 fi
+
