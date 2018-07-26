@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-# This program uses Python3
-
 import argparse
 import os
 import sys
@@ -14,14 +12,11 @@ dotfiles = {
     'gitconfig': '~/.gitconfig',
     'githelpers': '~/.githelpers',
     'gitignore': '~/.gitignore',
-    'ncmpcpp_config': '~/.config/ncmpcpp/config',
-    'screenrc': '~/.screenrc',
-    'skel': '~/.vim/skel',
-    'vimrc': '~/.vimrc',
     'init.vim': '~/.config/nvim/init.vim',
+    'ncmpcpp_config': '~/.config/ncmpcpp/config',
+    'tmux.conf': '~/.tmux.conf',
     'xbindkeysrc': '~/.xbindkeysrc',
     'xinitrc': '~/.xinitrc',
-    'Xresources': '~/.Xresources',
     'zshrc': '~/.zshrc',
 }
 
@@ -31,9 +26,7 @@ error = '\33[31m::\33[1;0m'
 
 def ask_overwrite(dst):
     choice = input('{} Overwrite {}? [y|N] '.format(ok, dst)).lower()
-    if choice in ['yes', 'y']:
-        return True
-    return False
+    return choice in ['yes', 'y']
 
 
 def list_dotfiles():
@@ -44,7 +37,7 @@ def list_dotfiles():
         print('{0:{1}} -> {2}'.format(dst, max_length, src))
 
 
-def main():
+def run():
     if args.list:
         list_dotfiles()
         sys.exit()
@@ -104,6 +97,6 @@ if __name__ == '__main__':
             default=False,
             action='store_true')
     args = parser.parse_args()
-    main()
+    run()
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
