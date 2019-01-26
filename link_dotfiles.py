@@ -9,11 +9,14 @@ import shutil
 dotfile_folder = os.path.expanduser('~/code/dotfiles')
 dotfiles = {
     # file in dotfile_folder : destination
+    'conky.conf': '~/.config/conky/conky.conf',
     'gitconfig': '~/.gitconfig',
     'githelpers': '~/.githelpers',
     'gitignore': '~/.gitignore',
     'init.vim': '~/.config/nvim/init.vim',
-    'ncmpcpp_config': '~/.config/ncmpcpp/config',
+    'ncmpcpp.conf': '~/.config/ncmpcpp/config',
+    'spectrwm.conf': '~/.spectrwm.conf',
+    'termite.conf': '~/.config/termite/config',
     'tmux.conf': '~/.tmux.conf',
     'xbindkeysrc': '~/.xbindkeysrc',
     'xinitrc': '~/.xinitrc',

@@ -109,6 +109,13 @@ else
 fi
 }
 
+# Virtual env
+VENV=""
+if [[ ${VIRTUAL_ENV} ]]; then
+  VENV="(${VIRTUAL_ENV:t})"
+fi
+
+
 case ${TERM} in
   (termite*|xterm*|rxvt*|screen*)
     print -Pn "\e]0;:: %~\a"
@@ -122,12 +129,13 @@ case ${TERM} in
 esac
 
 # Put everything together
-PROMPT='${RED}${EXITCODE}${WHITE}${PCOL}${SYM}${SSH}${NO_COLOUR} %40<...<%B%~%b%<< ${vcs_info_msg_0_}'
+PROMPT='${RED}${EXITCODE}${WHITE}${PCOL}${SYM}${SSH}${VENV}${NO_COLOUR} %40<...<%B%~%b%<< ${vcs_info_msg_0_}'
 # }}}
 
 
 # completion {{{
 
+fpath+=~/.zsh/zfunc
 zmodload -i zsh/complist
 autoload -Uz compinit
 compinit -C
@@ -214,23 +222,20 @@ bindkey '\e[3~' delete-char
 
 # disable spelling correction for these programs
 #
-alias cp='nocorrect cp'
+alias cp='nocorrect rsync -av --progress'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv'
 alias rm='nocorrect rm'
 
-alias aria='aria2c --continue --max-connection-per-server=4 --max-overall-download-limit=450k --summary-interval=0'
 alias cal='cal -w -m'
 alias feh='feh -x -d --scale-down'
-alias http='python -m http.server'
-alias ls='ls -b -CF --color=auto'
+alias serve='python -m http.server'
+alias ls='exa --git --long --header --group-directories-first'
 alias mpv='mpv --save-position-on-quit'
 alias pacaur='pacaur --color always'
 alias pacman='sudo pacman'
 alias r='rsync -Ph'
-# alias screen='screen -D -R'
 alias tmux='tmux new-session -A -s main'
-alias sub="subliminal download -s -l en -w 4"
 alias sxiv="sxiv-rifle"
 alias wiki='nvim -c VimwikiIndex'
 # }}}
@@ -291,6 +296,11 @@ TRAPINT() {
   # Return the default exit code so zsh aborts the current command.
   return ${1}
 }
+
+# fzf
+export FZF_DEFAULT_OPTS='--height 10%'
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
 
 # Show ips
 showmyips() {
@@ -369,7 +379,6 @@ servercert () {
 # github.com/rupa/z
 [[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 
-
 calc () {
   echo "scale=4; ${@}" | bc -l
 }
@@ -380,13 +389,30 @@ hrefs () {
 
 # recursive pull all git repos
 pullall () {
-  find . -type d -name .git -exec sh -c "cd \"{}\"/../ && pwd && git pull" \;
+  find . -maxdepth 2 -type d -name .git -exec sh -c "echo :: \"{}\" | sed -e 's/.git//'; cd \"{}\"/../ && git pull" \;
 }
 
 newerthan () {
   folder=${1:-.}
   ago=${2:-"1 day ago"}
   find "${folder}" -newermt "${ago}" -type f -print
+}
+
+imgrename () {
+  folder=${1}
+  exiftool -fileOrder DateTimeOriginal -extension jpg -ignoreMinorErrors '-FileName<CreateDate' -d %%.4nC-%Y%m%d-%H%M.%%le "${folder}"
+}
+
+aria() {
+  echo Downloading "$#" files...
+  for f in "$@"; do
+    aria2c -c -x 4 --max-overall-download-limit=450k --summary-interval=0 --console-log-level=warn "${f}"
+  done
+}
+
+# move $3 newest files from $1 to $2: mvn ~/source ~/dest 5
+mvn() {
+  mv "$1"/*(.om[1,"$3"]) "$2"
 }
 
 # }}}

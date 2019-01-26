@@ -47,36 +47,38 @@ set wrap
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-" Plug 'lifepillar/vim-solarized8'
 Plug 'KeitaNakamura/highlighter.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'airblade/vim-gitgutter'
 Plug 'ambv/black'
+Plug 'davidhalter/jedi'
 Plug 'davidhalter/jedi-vim'
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoInstallBinaries'}
 Plug 'gioele/vim-autoswap'
-Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
 Plug 'iCyMind/NeoSolarized'
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'joereynolds/deoplete-minisnip', { 'do': ':UpdateRemotePlugins' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'kh3phr3n/python-syntax'
+Plug 'lervag/vimtex'
 Plug 'luochen1990/rainbow'
 Plug 'machakann/vim-sandwich'
 Plug 'majutsushi/tagbar'
 Plug 'maximbaz/lightline-ale'
+Plug 'mechatroner/rainbow_csv'
 Plug 'mhinz/vim-signify'
-Plug 'mileszs/ack.vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'ryanoasis/vim-devicons'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+Plug 'pbogut/fzf-mru.vim'
 Plug 'sbdchd/neoformat'
-Plug 'sbdchd/vim-run'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'sgelb/vim-translator'
+Plug 'thinca/vim-quickrun'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'vimwiki/vimwiki'
@@ -89,22 +91,14 @@ let g:deoplete#enable_at_startup = 1
 set completeopt-=preview  " Disable documentation window
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#disable_auto_complete = 1
-
-""" Shougo/neosnippet
-" imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
+let g:deoplete#sources#jedi#show_docstring = 1
 
 """ davidhalter/jedi-vim
+" disable completions as we use deoplete for that
 let g:jedi#completions_enabled = 0
-let g:jedi#show_call_signatures = "1"
-let g:jedi#rename_command = "<leader>R"
 
 """ fatih/vim-go
 let $GOPATH = $HOME."/code/golang/"
-
-""" google/yapf
-let g:formatter_yapf_style = 'google'
 
 """ itchyny/lightline.vim
 let g:lightline = {'colorscheme': 'solarized'}
@@ -129,32 +123,51 @@ let g:lightline.active = {
       \ }
 
 " requires font with symbols, e.g. from https://github.com/ryanoasis/nerd-fonts
-let g:lightline#ale#indicator_checking = "\uf110"
-let g:lightline#ale#indicator_warnings = "\uf06a"
-let g:lightline#ale#indicator_errors = "\uf05e"
+let g:lightline#ale#indicator_checking = "\uf110 "
+let g:lightline#ale#indicator_warnings = "\uf06a "
+let g:lightline#ale#indicator_errors = "\uf05e "
 
 """ gioele/vim-autoswap
 let g:autoswap_detect_tmux = 1
 
-""" joereynolds/deoplete-minisnip
-let g:minisnip_dir = '~/.local/share/nvim/minisnip'
-
 """ junegunn/fzf
 let g:fzf_nvim_statusline = 0 " disable statusline overwriting
+
+""" lervag/vimtex
+let g:vimtex_compiler_progname = 'nvr'
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_format_enabled = 1
+let g:vimtex_quickfix_latexlog = { 'overfull' : 0, 'underfull' : 0 }
+call deoplete#custom#var('omni', 'input_patterns', { 'tex': g:vimtex#re#deoplete })
+
+""" maximbaz/lightline-ale
+" see https://github.com/maximbaz/lightline-ale/issues/5
+function! s:goyo_enter()
+  let g:ale_enabled=0
+endfunction
+autocmd! User GoyoEnter call <SID>goyo_enter()
+
+function! s:goyo_leave()
+  let g:ale_enabled=1
+endfunction
+autocmd! User GoyoLeave call <SID>goyo_leave()
 
 """ luochen1990/rainbow
 let g:rainbow_active = 1
 
-""" mileszs/ack.vim
-if executable('rg')
-  let g:ackprg = 'rg --vimgrep'
-endif
+""" numirias/semshi
+let g:semshi#simplify_markup = 0
 
 """ ntpeters/vim-better-whitespace
 autocmd BufEnter * EnableStripWhitespaceOnSave  " strip whitespace on save
 
-""" sbdchd/vim-run
-autocmd FileType python nmap <silent> <leader>r :Run<cr>
+""" sbdchd/neoformat
+let g:neoformat_enabled_python = ['black', 'isort', 'docformatter']
+let g:neoformat_python_run_all_formatters = 1
+
+
+""" tengufromsky/vim-translator
+let g:translate_cmd='trans -b :en'
 
 """ vim-python/python-syntax
 let g:python_highlight_all = 1
@@ -171,7 +184,7 @@ autocmd FileType markdown setlocal commentstring=<!--\ %s\ -->
 """ w0rp/ale
 " Python: ignore warnings about maximum line length, intent not multiple
 " of 4 (code and comments)
-let g:ale_python_flake8_args = '--ignore=E501,E111,E114'
+let g:ale_python_flake8_options = '--ignore=E501,E111,E114 --max-line-length=100'
 let g:ale_fixers = {
       \ 'python': [
       \   'autopep8',
@@ -179,11 +192,13 @@ let g:ale_fixers = {
       \ ]
       \}
 
+let g:ale_html_tidy_options = '--drop-empty-elements no'
+
+
 """"""""""""""
 " CODING STUFF
 """"""""""""""
 
-let python_highlight_all = 1
 let g:python_host_prog = '/usr/bin/python2'
 let g:python3_host_prog = '/usr/bin/python3'
 
@@ -204,24 +219,38 @@ augroup vimrcEx
   autocmd BufNewFile,BufRead *.py set keywordprg=pydoc
 augroup END
 
-
 """""""""""""
 " KEY MAPPING
 """""""""""""
 
 let mapleader=","
 
+inoremap <Leader><Tab> <Tab>
+
+""" junegunn/fzf
+nnoremap <silent> <leader>f :Files<CR>
+nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <leader>rg :Rg<Space>
+nnoremap <silent> <leader>m :FZFMru<CR>
+
+""" tengufromsky/vim-translator
+vmap T <Plug>Translate
+vmap R <Plug>TranslateReplace
+
+""" thinca/vim-quickrun
+nmap <silent> <leader>q :QuickRun<cr>
+
+""" sbdchd/neoformat
+nmap <silent> <leader>y :Neoformat<cr>
+
 """ Shougo/deoplete.vim
 inoremap <silent><expr><tab>  pumvisible() ? "\<c-n>" : deoplete#mappings#manual_complete()
 inoremap <silent><expr><s-tab>  pumvisible() ? "\<c-p>" : "\<c-tab>"
 
-""" junegunn/fzf
-nnoremap <silent> <leader>t :Files<CR>
-nnoremap <silent> <leader>b :Buffers<CR>
-
-""" mileszs/ack.vim
-cnoreabbrev Ack Ack!
-nnoremap <Leader>a :Ack!<Space>
+""" Shougo/neosnippet.vim
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 """ w0rp/ale
 nmap <silent> <leader>aj :ALENextWrap<cr>
@@ -269,7 +298,7 @@ function! MyFoldText()
     let line = strpart(line, 0, windowwidth - 2 - len(foldedlinecount))
     let fillcharcount = windowwidth - strdisplaywidth(line) - len(foldedlinecount) - 6
     return line . repeat(" ",fillcharcount) . foldedlinecount . ' lines' . ' '
-endfunction "
+endfunction
 set foldtext=MyFoldText()
 
 

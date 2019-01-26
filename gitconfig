@@ -10,13 +10,11 @@
 [alias]
   co = checkout
   ci = commit --verbose
-  di = diff
-  dc = diff --cached
-  ds = diff --stat
+  du= diff
+  ds = diff --cached
   aa = add --all
   st = status
   ss = status --short --branch
-
   it = !git init && git commit --allow-empty -m 'Initial commit'
 
   # Fancy logging.
@@ -34,3 +32,11 @@
   prompt = false
 [difftool "icdiff"]
   cmd = /usr/bin/icdiff --line-numbers $LOCAL $REMOTE
+[pager]
+  diff = diff-so-fancy --color | less --tabs=1,5
+  show = diff-so-fancy --color | less --tabs=1,5
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[mergetool]
+	prompt = false

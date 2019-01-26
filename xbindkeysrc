@@ -15,20 +15,44 @@
 #"xterm -geom 50x20+20+20"
 #   Shift+Mod2+alt + s
 
-"urxvt"
+"termite"
   Control+Mod1+c
 
 "~/bin/dm.sh"
   Mod4+space
 
-"firejail firefox"
+"firefox"
   Control+Mod1+f
 
-"urxvt -e firejail mutt"
+"termite -e ~/bin/start_mutt.sh"
   Control+Mod1+m
 
-"urxvt -e ncmpcpp"
+"termite -e ncmpcpp"
   Control+Mod1+x
+
+"pamixer --decrease 2"
+  XF86AudioLowerVolume
+
+"pamixer --increase 2"
+  XF86AudioRaiseVolume
+
+"pamixer --toggle-mute"
+  XF86AudioMute
+
+"mpc toggle"
+  XF86AudioMicMute
+
+"/usr/bin/xbacklight -dec 2 -time 0"
+  XF86MonBrightnessDown
+
+"/usr/bin/xbacklight -inc 2 -time 0"
+  XF86MonBrightnessUp
+
+"/usr/bin/xbacklight -set 100"
+  Control+XF86MonBrightnessUp
+
+"/usr/bin/xbacklight -set 40"
+  Control+XF86MonBrightnessDown
 
 "mpc -q prev"
   XF86AudioPrev
@@ -39,20 +63,14 @@
 "mpc -q toggle"
   XF86AudioPlay
 
-"amixer sset Master 1- unmute"
-  XF86AudioLowerVolume
+"systemctl poweroff"
+  XF86PowerOff
 
-"amixer sset Master 1+ unmute"
-  XF86AudioRaiseVolume
+"/usr/bin/i3lock -c 000000"
+  Mod4+Delete
 
-"amixer sset Master toggle"
-  XF86AudioMute
-
-"/usr/bin/xbacklight -inc 20 -time 0"
-  XF86MonBrightnessUp
-
-"/usr/bin/xbacklight -dec 20 -time 0"
-  XF86MonBrightnessDown
+# "rofi -kb-accept-entry '!Alt-Tab' -kb-row-down Alt-Tab -show window"
+#   Mod1+Tab
 
 
 ##################################

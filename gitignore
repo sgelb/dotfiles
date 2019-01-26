@@ -6,9 +6,6 @@
 *.out
 *.log
 
-# sgelb/vTransfer
-.vTransfer
-
 # python specific
 *.pyc
 
