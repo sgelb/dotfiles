@@ -1,0 +1,20 @@
+{
+  "codeLens.enable": false,
+
+  "python.jediEnabled": false,
+  "python.workspaceSymbols.ctagsPath": "/usr/bin/ctags",
+
+  "python.linting.enabled": true,
+  "python.linting.pylintArgs": ["--rcfile", "~/.pylintrc", "-d", "C0411"],
+  "python.linting.flake8Args": ["--ignore", "E501,E111,E114,E203,W503", "--max-line-length", "100"],
+
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": "~/.local/bin/black",
+  "python.formatting.blackArgs": ["-l", "100"],
+
+  "python.linting.pylintUseMinimalCheckers": false,
+  "python.linting.pylintPath": "pylint",
+
+  "coc.preferences.formatOnSaveFiletypes": ["python"],
+  "coc.preferences.colorSupport": true
+}

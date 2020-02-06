@@ -3,14 +3,16 @@
 if [[ -z "${DISPLAY}" ]] && [[ $(tty) =~ tty[123] ]]; then
   startx
   logout
+elif [[ $(tty) = /dev/tty4 ]]; then
+  exec sway
 fi
 
 # exports and variables {{{
 export GOPATH=${HOME}/code/golang
-export PATH="${PATH}:${HOME}/bin:${HOME}/.local/bin:${HOME}/.node_modules_global/bin:${GOPATH}/bin:${HOME}/.npm/bin:$(ruby -e 'print Gem.user_dir')/bin"
+export PATH="${PATH}:${HOME}/.local/bin:${HOME}/.node_modules_global/bin:${GOPATH}/bin:${HOME}/.npm/bin:$(ruby -e 'print Gem.user_dir')/bin:${HOME}/.poetry/bin"
 export EDITOR='/usr/bin/nvim'
 export SHELL='/bin/zsh'
-HISTFILE=${HOME}/.zsh_history
+export HISTFILE=${HOME}/.zsh_history
 
 # Highlight search results in ack.
 export ACK_COLOR_MATCH='red'
@@ -29,6 +31,11 @@ setopt NO_BEEP # avoid "beep"ing
 setopt EXTENDED_GLOB
 setopt NONOMATCH
 autoload zmv # rename
+
+# autocomplete for pmbootstrap
+# autoload bashcompinit
+# bashcompinit
+# eval "$(register-python-argcomplete pmbootstrap)"
 
 REPORTTIME=5  # show report if cmd runs longer than 5 secondes
 HISTSIZE=50000
@@ -138,7 +145,7 @@ PROMPT='${RED}${EXITCODE}${WHITE}${PCOL}${SYM}${SSH}${VENV}${NO_COLOUR} %40<...<
 fpath+=~/.zsh/zfunc
 zmodload -i zsh/complist
 autoload -Uz compinit
-compinit -C
+compinit
 
 # use cache
 zstyle ':completion:*' use-cache on
@@ -236,8 +243,9 @@ alias pacaur='pacaur --color always'
 alias pacman='sudo pacman'
 alias r='rsync -Ph'
 alias tmux='tmux new-session -A -s main'
+alias sub="subliminal download -s -l en -w 4"
 alias sxiv="sxiv-rifle"
-alias wiki='nvim -c VimwikiIndex'
+alias wiki='nvim -c WikiIndex'
 # }}}
 
 # suffix-aliases {{{
@@ -302,10 +310,27 @@ export FZF_DEFAULT_OPTS='--height 10%'
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 
-# Show ips
 showmyips() {
   ip addr show | egrep -o 'inet ([0-9]{1,3}\.?){4}' | cut -d " " -f 2
-  curl --silent 192.168.2.1/bootstrapDef.js | egrep -o '([0-9]{1,3}\.?){4}'
+  curl --silent https://api.ipify.org
+  echo
+}
+
+nextmovie() {
+  CMDS=$(grep -E "^mpv [^ ]|:[0-9: ];mpv [^ ]" "${HISTFILE}" | tail -n 1 | sed -e 's/^.*mpv //g')
+  FOLDER=$(dirname $CMDS)
+  FILE=$(basename $CMDS)
+  BASE=$(find ~ -maxdepth 3 -wholename "*${FOLDER}")
+  NEXT=$(/usr/bin/ls -1 "${BASE}"/^*.(srt|txt)(.) | grep -A 1 ${FILE} | tail -n 1)
+
+  if [[ $# == 0 ]]; then
+    print -s -r -- "mpv ${NEXT}"
+    fc -W
+    mpv "${NEXT}"
+  else
+    echo "Last: ${CMDS}"
+    echo "Next: ${NEXT}"
+  fi
 }
 
 # Update packages
@@ -406,7 +431,7 @@ imgrename () {
 aria() {
   echo Downloading "$#" files...
   for f in "$@"; do
-    aria2c -c -x 4 --max-overall-download-limit=450k --summary-interval=0 --console-log-level=warn "${f}"
+    aria2c -c -x 4 --summary-interval=0 --console-log-level=warn "${f}"
   done
 }
 
@@ -421,4 +446,22 @@ mvn() {
 if [[ -f  "$HOME/.local/share/dircolors/solarized256dark" ]]; then
   eval `dircolors $HOME/.local/share/dircolors/solarized256dark`
 fi
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+start_conda() {
+  __conda_setup="$('/home/grml/.miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+  if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+  else
+    if [ -f "/home/grml/.miniconda3/etc/profile.d/conda.sh" ]; then
+      . "/home/grml/.miniconda3/etc/profile.d/conda.sh"
+    else
+      export PATH="/home/grml/.miniconda3/bin:$PATH"
+    fi
+  fi
+  unset __conda_setup
+}
+# <<< conda initialize <<<
 

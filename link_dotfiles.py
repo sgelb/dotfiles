@@ -9,6 +9,7 @@ dotfile_folder = os.path.expanduser("~/code/dotfiles")
 dotfiles = {
     # file in dotfile_folder : destination
     "conky.conf": "~/.config/conky/conky.conf",
+    "coc-settings.json": "~/.config/nvim/coc-settings.conf",
     "gitconfig": "~/.gitconfig",
     "githelpers": "~/.githelpers",
     "gitignore": "~/.gitignore",
@@ -86,9 +87,7 @@ if __name__ == "__main__":
         # continue if src already symlinked to dst
         if os.path.realpath(dst) == src:
             if args.verbose:
-                print(
-                    "{} {} already linked to {}".format(ok, os.path.basename(src), dst)
-                )
+                print("{} {} already linked to {}".format(ok, os.path.basename(src), dst))
             continue
 
         # create symlink if destination file does not exist
